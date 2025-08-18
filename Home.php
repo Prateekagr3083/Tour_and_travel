@@ -16,6 +16,7 @@
             <a href="#" class="btn">VIEW TOURS</a>
             <div class="hero-image">
                 <img src="project image/person-riding-horse-silhouette-wallpaper.jpg" alt="Horse silhouette wallpaper" class="hero-img">
+                <a href="#" class="btn">VIEW TOURS</a>
             </div>
         </div>
     </main>
