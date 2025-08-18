@@ -10,10 +10,7 @@
             <?php
             session_start();
             if (isset($_SESSION['user_id'])) {
-                // User is logged in, show avatar
-                echo '<li class="nav-item">
-                        <img src="path/to/avatar.jpg" alt="Avatar" class="avatar">
-                      </li>';
+                // User is logged in, do not show avatar
             } else {
                 // User is not logged in, show login button
                 echo '<li class="nav-item">
