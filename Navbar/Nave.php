@@ -7,9 +7,20 @@
             <li class="nav-item">
                 <a href="Home.php" class="nav-link">Home</a>
             </li>
-            <li class="nav-item">
-                <a href="Login.php" class="nav-link custom-btn btn-1">Login</a>
-            </li>
+            <?php
+            session_start();
+            if (isset($_SESSION['user_id'])) {
+                // User is logged in, show avatar
+                echo '<li class="nav-item">
+                        <img src="path/to/avatar.jpg" alt="Avatar" class="avatar">
+                      </li>';
+            } else {
+                // User is not logged in, show login button
+                echo '<li class="nav-item">
+                        <a href="Login.php" class="nav-link custom-btn btn-1">Login</a>
+                      </li>';
+            }
+            ?>
         </ul>
     </div>
 </nav>
