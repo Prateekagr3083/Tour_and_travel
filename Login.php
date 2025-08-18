@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start the session at the top
 // Include database connection
 include 'Database/db_connect.php';
 
@@ -17,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         // Verify password
         if (password_verify($password, $row['password_hash'])) {
-            // Redirect to dashboard or home
+            // Start session and redirect to dashboard or home
+            session_start();
             $_SESSION['user_id'] = $row['id'];
             header("Location: Home.php");
             exit();
