@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start the session at the top
 // Include database connection
 include 'Database/db_connect.php';
 
