@@ -37,6 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES ('$firstname', '$lastname', '$contact', '$email', '$hashed_password', '$gender', '$terms_accepted')";
     
     if ($conn->query($sql) === TRUE) {
+        // Get the newly created user ID
+        $user_id = $conn->insert_id;
+        
+        // Start session and set user_id
+        session_start();
+        $_SESSION['user_id'] = $user_id;
+        
         echo "<script>alert('Registration successful!'); window.location.href='Home.php';</script>";
     } else {
         echo "<script>alert('Error: " . $conn->error . "'); window.location.href='Register.php';</script>";

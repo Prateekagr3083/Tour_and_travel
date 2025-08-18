@@ -6,6 +6,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="CSS/Home.css">
     <link rel="stylesheet" href="CSS/Nave.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <?php include 'Navbar/Nave.php'; ?>
