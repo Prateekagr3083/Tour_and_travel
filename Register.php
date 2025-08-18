@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
     // Insert new user
-    $sql = "INSERT INTO users (firstname, lastname, contact, email, password, gender) 
-            VALUES ('$firstname', '$lastname', '$contact', '$email', '$hashed_password', '$gender')";
+    $sql = "INSERT INTO users (first_name, last_name, contact_number, email, password_hash, gender, terms_accepted) 
+            VALUES ('$first_name', '$last_name', '$contact_number', '$email', '$hashed_password', '$gender', '$terms_accepted')";
     
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Registration successful!'); window.location.href='Login.php';</script>";
