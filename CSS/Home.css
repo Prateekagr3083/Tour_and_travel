@@ -44,18 +44,22 @@ nav a {
 
 .container {
     position: absolute;
-    bottom: 20%;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     text-align: center;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-.container h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
+.btn {
+    background-color: orange;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
 }
 
 .hero-image {
