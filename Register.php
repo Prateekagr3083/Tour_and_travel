@@ -5,9 +5,9 @@ include 'Database/db_connect.php';
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate input data
-    $first_name = mysqli_real_escape_string($conn, $_POST['firstname']);
-    $last_name = mysqli_real_escape_string($conn, $_POST['lastname']);
-    $contact_number = mysqli_real_escape_string($conn, $_POST['contact']);
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $contact = mysqli_real_escape_string($conn, $_POST['contact']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
