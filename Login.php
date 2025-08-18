@@ -17,8 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         // Verify password
         if (password_verify($password, $row['password_hash'])) {
-            // Start session and redirect to dashboard or home
-            session_start();
+            // Redirect to dashboard or home
             $_SESSION['user_id'] = $row['id'];
             header("Location: Home.php");
             exit();
