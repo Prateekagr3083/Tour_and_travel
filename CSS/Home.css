@@ -56,7 +56,9 @@ nav a {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center the button */
-    margin-top: 20px; /* Space below the navbar */
+    margin-top: 0; /* Remove gap between navbar and image */
+    margin-bottom: 0;
+    padding: 0;
 }
 
 .hero-img {
