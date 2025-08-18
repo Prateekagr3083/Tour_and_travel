@@ -34,10 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Insert new user
     $sql = "INSERT INTO users (first_name, last_name, contact_number, email, password_hash, gender, terms_accepted) 
-            VALUES ('$first_name', '$last_name', '$contact_number', '$email', '$hashed_password', '$gender', '$terms_accepted')";
+            VALUES ('$firstname', '$lastname', '$contact', '$email', '$hashed_password', '$gender', '$terms_accepted')";
     
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Registration successful!'); window.location.href='Login.php';</script>";
+        echo "<script>alert('Registration successful!'); window.location.href='Home.php';</script>";
     } else {
         echo "<script>alert('Error: " . $conn->error . "'); window.location.href='Register.php';</script>";
     }
