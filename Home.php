@@ -14,9 +14,7 @@
         <div class="container">
             <h1>DISCOVER YOUR NEXT TRIP</h1>
             <a href="#" class="btn">VIEW TOURS</a>
-            <div class="hero-image">
-                <img src="project image/person-riding-horse-silhouette-wallpaper.jpg" alt="Horse silhouette wallpaper" class="hero-img">
-                <a href="#" class="btn">VIEW TOURS</a>
+            
             </div>
         </div>
     </main>
