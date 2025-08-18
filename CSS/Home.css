@@ -43,21 +43,33 @@ nav a {
 }
 
 .container {
-    height: calc(100vh - 60px);
+    height: 100vh; /* Full height */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('your-image-url-here.jpg') no-repeat center center/cover;
+    background: url('project image/person-riding-horse-silhouette-wallpaper.jpg') no-repeat center center/cover; /* Full-width background image */
     color: white;
     text-align: center;
-    padding: 20px;
+    position: relative; /* For overlay positioning */
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1; /* Ensure overlay is above the background */
 }
 
 h1 {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    line-height: 1.2;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    position: relative; /* For text positioning */
+    z-index: 2; /* Ensure text is above the overlay */
 }
 
 .btn {
@@ -68,46 +80,19 @@ h1 {
     border-radius: 5px;
     text-decoration: none;
     font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.hero-image {
-    max-height: 50vh;
-    max-width: 90%;
-    margin: 0 auto;
-}
-
-.hero-img {
-    max-height: 100%;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    object-fit: contain;
+    margin-top: 20px;
+    position: relative; /* For button positioning */
+    z-index: 2; /* Ensure button is above the overlay */
 }
 
 @media (max-width: 768px) {
     h1 {
         font-size: 2rem;
     }
-    
-    .hero-image {
-        max-height: 40vh;
-    }
 }
 
 @media (max-width: 480px) {
     h1 {
         font-size: 1.5rem;
-    }
-    
-    .btn {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-    
-    .hero-image {
-        max-height: 35vh;
     }
 }
