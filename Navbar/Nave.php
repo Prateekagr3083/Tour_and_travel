@@ -14,7 +14,21 @@
             
             if (isset($_SESSION['user_id'])) {
                 // User is logged in, show avatar with dropdown
-                $userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
+                $fullName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
+                
+                // Extract first name from full name or email
+                if (isset($_SESSION['first_name'])) {
+                    $userName = $_SESSION['first_name'];
+                } else {
+                    // Extract first name from full name or email
+                    $nameParts = explode(' ', $fullName);
+                    $userName = $nameParts[0];
+                    
+                    // If it's an email, extract the part before @
+                    if (strpos($userName, '@') !== false) {
+                        $userName = explode('@', $userName)[0];
+                    }
+                }
                 ?>
                 <li class="nav-item auth-container">
                     <div class="user-avatar" onclick="toggleDropdown()">
