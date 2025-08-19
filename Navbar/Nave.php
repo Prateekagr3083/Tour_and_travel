@@ -42,9 +42,6 @@
                 <li class="nav-item">
                     <a href="Login.php" class="nav-link custom-btn btn-1">Login</a>
                 </li>
-                <li class="nav-item hidden md:block">
-                    <a href="Register.php" class="nav-link custom-btn btn-2">Register</a>
-                </li>
                 <?php
             }
             ?>
