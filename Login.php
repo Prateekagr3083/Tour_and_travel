@@ -19,7 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Start session and redirect to dashboard or home
             session_start();
             $_SESSION['user_id'] = $row['id'];
-            echo "User ID set: " . $_SESSION['user_id']; // Debugging line
+            $_SESSION['user_name'] = $row['name'] ?? $row['email']; // Store user name
+            $_SESSION['user_email'] = $row['email'];
             header("Location: Home.php");
             exit();
         } else {

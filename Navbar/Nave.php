@@ -11,21 +11,71 @@
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
+            
             if (isset($_SESSION['user_id'])) {
-                // User is logged in, show avatar
-                echo '<li class="nav-item">
-                        <div class="user-avatar">
-                            <img src="Icons/user.png" alt="User Avatar" class="avatar-img">
-                            <i class="bxr bx-user"></i>
-                        </div>
-                      </li>';
+                // User is logged in, show avatar with dropdown
+                $userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
+                ?>
+                <li class="nav-item auth-container">
+                    <div class="user-avatar" onclick="toggleDropdown()">
+                        <img src="Icons/user.png" alt="User Avatar" class="avatar-img">
+                        <span class="user-name hidden md:inline"><?php echo htmlspecialchars($userName); ?></span>
+                        <i class="dropdown-arrow">▼</i>
+                    </div>
+                    <div class="auth-dropdown" id="userDropdown">
+                        <a href="profile.php" class="dropdown-item">
+                            <i class="icon">👤</i> My Profile
+                        </a>
+                        <a href="bookings.php" class="dropdown-item">
+                            <i class="icon">📋</i> My Bookings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="?logout=1" class="dropdown-item logout">
+                            <i class="icon">🚪</i> Logout
+                        </a>
+                    </div>
+                </li>
+                <?php
             } else {
-                // User is not logged in, show login button
-                echo '<li class="nav-item">
-                        <a href="Login.php" class="nav-link custom-btn btn-1">Login</a>
-                      </li>';
+                // User is not logged in, show login/register buttons
+                ?>
+                <li class="nav-item">
+                    <a href="Login.php" class="nav-link custom-btn btn-1">Login</a>
+                </li>
+                <li class="nav-item hidden md:block">
+                    <a href="Register.php" class="nav-link custom-btn btn-2">Register</a>
+                </li>
+                <?php
             }
             ?>
         </ul>
     </div>
 </nav>
+
+<?php
+// Handle logout
+if (isset($_GET['logout'])) {
+    session_start();
+    session_unset();
+    session_destroy();
+    header("Location: Home.php");
+    exit();
+}
+?>
+
+<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('userDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdown');
+    const avatar = document.querySelector('.user-avatar');
+    
+    if (!avatar.contains(event.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+</script>
