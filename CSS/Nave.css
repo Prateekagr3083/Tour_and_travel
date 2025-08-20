@@ -104,12 +104,13 @@
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 25px;
-    background-color: #ffcc00; /* Change to a bright yellow background */
+    background-color: #ff6600; /* Complementary orange color for better visibility */
+    border: 2px solid #ffffff;
     transition: all 0.3s ease;
 }
 
 .user-avatar:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #ff8533;
     transform: scale(1.05);
 }
 
