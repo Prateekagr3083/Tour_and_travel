@@ -119,6 +119,9 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #ff6600;
+    background-color: #ffffff;
+    padding: 2px;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .user-name {
