@@ -32,7 +32,7 @@
                 ?>
                 <li class="nav-item auth-container">
                     <div class="user-avatar" onclick="toggleDropdown()">
-                        <img src="Icons/user.png" alt="User Avatar" class="avatar-img">
+<img src="https://via.placeholder.com/35" alt="User Avatar" class="avatar-img">
                         <span class="user-name hidden md:inline"><?php echo htmlspecialchars($userName); ?></span>
                         <i class="dropdown-arrow">▼</i>
                     </div>
