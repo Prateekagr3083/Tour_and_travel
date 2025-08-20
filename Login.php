@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>
     <link rel="stylesheet" href="CSS/Login.css">
     <link rel="stylesheet" href="CSS/Nave.css">
+    <script src="Scripts/session-handler.js"></script>
 </head>
 <body>
     <?php include 'Navbar/Nave.php'; ?>

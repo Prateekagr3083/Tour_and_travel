@@ -10,6 +10,11 @@
     
     // Initialize session handling
     function initSessionHandling() {
+        // Only initialize if user is logged in
+        if (!isUserLoggedIn()) {
+            return;
+        }
+        
         // Track user activity
         trackUserActivity();
         
@@ -25,7 +30,7 @@
     
     // Track user interactions to update last activity
     function trackUserActivity() {
-        const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+        const events = ['click', 'mousemove', 'keypress', 'scroll', 'touchstart', 'touchmove'];
         
         events.forEach(event => {
             window.addEventListener(event, updateLastActivity, { passive: true });
@@ -48,21 +53,31 @@
     
     // Handle tab/window close
     function handleWindowClose() {
+        // Handle beforeunload for immediate logout on close
         window.addEventListener('beforeunload', function(e) {
-            // Perform logout actions
             performLogout();
-            
-            // Optional: Show confirmation dialog (uncomment if needed)
-            // e.preventDefault();
-            // e.returnValue = '';
+        });
+        
+        // Handle pagehide for mobile browsers
+        window.addEventListener('pagehide', function(e) {
+            performLogout();
         });
         
         // Handle visibility change (tab switching)
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
-                // Tab is hidden, could implement additional checks
-                checkSessionTimeout();
+                // When tab becomes hidden, check if it's a real close
+                setTimeout(() => {
+                    if (document.visibilityState === 'hidden') {
+                        performLogout();
+                    }
+                }, 1000);
             }
+        });
+        
+        // Handle unload event as fallback
+        window.addEventListener('unload', function() {
+            performLogout();
         });
     }
     
@@ -119,15 +134,21 @@
     // Redirect to login page
     function redirectToLogin() {
         // Only redirect if not already on login page
-        if (!window.location.pathname.includes('login') && !window.location.pathname.includes('Login')) {
-            window.location.href = '/Login.php';
+        const currentPath = window.location.pathname.toLowerCase();
+        if (!currentPath.includes('login') && !currentPath.includes('login.php')) {
+            window.location.href = 'Login.php';
         }
     }
     
     // Check if user is logged in
     function isUserLoggedIn() {
-        // Check PHP session (server-side)
-        return document.cookie.includes('PHPSESSID=');
+        // Check PHP session via cookie
+        const hasSessionCookie = document.cookie.includes('PHPSESSID=');
+        
+        // Check if we have any indication of logged in user
+        const navHasUser = document.querySelector('.user-avatar') !== null;
+        
+        return hasSessionCookie && navHasUser;
     }
     
     // Initialize when DOM is ready
