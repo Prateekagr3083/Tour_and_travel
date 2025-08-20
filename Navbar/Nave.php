@@ -8,16 +8,18 @@
                 <a href="Home.php" class="nav-link">Home</a>
             </li>
             <?php
+            // Start session if not already started
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
             
-            if (isset($_SESSION['user_id'])) {
+            // Check if user is logged in
+            if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                 // User is logged in, show avatar with dropdown
                 $fullName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
                 
-                // Extract first name from full name or email
-                if (isset($_SESSION['first_name'])) {
+                // Extract first name for display
+                if (isset($_SESSION['first_name']) && !empty($_SESSION['first_name'])) {
                     $userName = $_SESSION['first_name'];
                 } else {
                     // Extract first name from full name or email
@@ -29,18 +31,23 @@
                         $userName = explode('@', $userName)[0];
                     }
                 }
+                
+                // Ensure username is not empty
+                if (empty($userName)) {
+                    $userName = 'User';
+                }
                 ?>
                 <li class="nav-item auth-container">
-                    <div class="user-avatar" onclick="toggleDropdown()">
-                        <img src="https://via.placeholder.com/35/ffcc00/000000?text=U" alt="User Avatar" class="avatar-img">
+                    <div class="user-avatar" onclick="toggleDropdown(event)">
+                        <img src="Icons/user.png" alt="User Avatar" class="avatar-img" onerror="this.src='https://via.placeholder.com/35/ffcc00/000000?text=U'">
                         <span class="user-name hidden md:inline"><?php echo htmlspecialchars($userName); ?></span>
                         <i class="dropdown-arrow">▼</i>
                     </div>
                     <div class="auth-dropdown" id="userDropdown">
-                        <a href="profile.php" class="dropdown-item">
+                        <a href="#" class="dropdown-item" onclick="showProfileMessage()">
                             <i class="icon">👤</i> My Profile
                         </a>
-                        <a href="bookings.php" class="dropdown-item">
+                        <a href="#" class="dropdown-item" onclick="showBookingsMessage()">
                             <i class="icon">📋</i> My Bookings
                         </a>
                         <div class="dropdown-divider"></div>
