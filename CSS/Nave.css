@@ -104,7 +104,7 @@
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.5); /* Change to a lighter background */
+    background-color: #ffcc00; /* Change to a bright yellow background */
     transition: all 0.3s ease;
 }
 
