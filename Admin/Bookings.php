@@ -18,7 +18,7 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all bookings from database with user and tour information
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, u.username as user_name, u.email as user_email, 
+$sql = "SELECT b.id, b.booking_date, b.status, u.name as user_name, u.email as user_email, 
         t.title as tour_name, d.name as destination_name
         FROM bookings b 
         JOIN users u ON b.user_id = u.id 
@@ -38,11 +38,11 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Manage Bookings - Admin Panel</title>
-    <link rel="stylesheet" href="css/Admin.css">
-    <link rel="stylesheet" href="css/bookings.css">
+    <link rel="stylesheet" href="css/Admin.css" />
+    <link rel="stylesheet" href="css/bookings.css" />
 </head>
 <body>
     <div class="admin-container">
@@ -52,7 +52,7 @@ $conn->close();
                 <h2>Admin Panel</h2>
                 <p>Tour & Travel Management</p>
             </div>
-            
+
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="Dashboard.php" class="nav-link">
@@ -107,7 +107,7 @@ $conn->close();
                     </div>
                     <div class="filter-group">
                         <label for="date">Booking Date</label>
-                        <input type="date" id="date" name="date">
+                        <input type="date" id="date" name="date" />
                     </div>
                     <button type="submit" class="filter-btn">Apply Filters</button>
                 </form>
