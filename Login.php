@@ -16,12 +16,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         // Verify password
         if (password_verify($password, $row['password_hash'])) {
-            // Start session and redirect to dashboard or home
+            // Start session
             session_start();
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user_name'] = $row['name'] ?? $row['email']; // Store user name
             $_SESSION['user_email'] = $row['email'];
-            header("Location: Home.php");
+            
+            // Check if user is admin and redirect accordingly
+            if (isset($row['role']) && $row['role'] === 'admin') {
+                $_SESSION['admin_id'] = $row['id'];
+                $_SESSION['admin_name'] = $row['first_name'] . ' ' . $row['last_name'];
+                $_SESSION['admin_email'] = $row['email'];
+                $_SESSION['admin_role'] = 'admin';
+                header("Location: Admin/Dashboard.php");
+            } else {
+                header("Location: Home.php");
+            }
             exit();
         } else {
             echo "<script>alert('Invalid password!'); window.location.href='Login.php';</script>";
