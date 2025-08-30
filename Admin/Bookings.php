@@ -43,3 +43,135 @@ $conn->close();
     <title>Manage Bookings - Admin Panel</title>
     <link rel="stylesheet" href="css/Admin.css">
     <link rel="stylesheet" href="css/bookings.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Tour & Travel Management</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="Dashboard.php" class="nav-link">
+                        <i>📊</i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i>👥</i> Users
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="Tours.php" class="nav-link">
+                        <i>🏨</i> Tours
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="Bookings.php" class="nav-link">
+                        <i>📋</i> Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i>⚙️</i> Settings
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="welcome-message">
+                    <h1>Manage Bookings</h1>
+                    <p>Admin Panel - <?php echo date('F j, Y'); ?></p>
+                </div>
+                <a href="logout.php" class="logout-btn">Logout</a>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <form class="filter-form">
+                    <div class="filter-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="">All Status</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="pending">Pending</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="date">Booking Date</label>
+                        <input type="date" id="date" name="date">
+                    </div>
+                    <button type="submit" class="filter-btn">Apply Filters</button>
+                </form>
+            </div>
+
+            <!-- Bookings Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>All Bookings</h2>
+                </div>
+
+                <?php if (!empty($bookings)): ?>
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>User</th>
+                                <th>Tour</th>
+                                <th>Destination</th>
+                                <th>Guests</th>
+                                <th>Total Price</th>
+                                <th>Booking Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($bookings as $booking): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($booking['id']); ?></td>
+                                    <td>
+                                        <div><?php echo htmlspecialchars($booking['user_name']); ?></div>
+                                        <small><?php echo htmlspecialchars($booking['user_email']); ?></small>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($booking['tour_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($booking['destination_name']); ?></td>
+                                    <td><!-- Guests column not in bookings table -->N/A</td>
+                                    <td><!-- Total price column not in bookings table -->N/A</td>
+                                    <td><?php echo date('M j, Y', strtotime($booking['booking_date'])); ?></td>
+                                    <td>
+                                        <span class="status-<?php echo $booking['status']; ?>">
+                                            <?php echo ucfirst($booking['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="action-btn view-btn">View</a>
+                                        <?php if ($booking['status'] === 'pending'): ?>
+                                            <a href="#" class="action-btn confirm-btn">Confirm</a>
+                                            <a href="#" class="action-btn cancel-btn">Cancel</a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="no-bookings">
+                        <i>📋</i>
+                        <h3>No Bookings Found</h3>
+                        <p>There are no bookings in the system yet.</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
