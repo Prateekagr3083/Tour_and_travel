@@ -16,9 +16,13 @@ $admin_id = $_SESSION['admin_id'];
 $admin_name = $_SESSION['admin_name'];
 $admin_email = $_SESSION['admin_email'];
 
-// Get all tours from database
+// Get all tours from database with destination and package names
 $tours = [];
-$sql = "SELECT * FROM tours ORDER BY created_at DESC";
+$sql = "SELECT t.id, t.title, d.name AS destination_name, t.price, t.duration, p.name AS package_name
+        FROM tours t
+        LEFT JOIN destinations d ON t.destination_id = d.id
+        LEFT JOIN tour_packages p ON t.package_id = p.id
+        ORDER BY t.id DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -112,16 +116,18 @@ $conn->close();
                             <?php foreach ($tours as $tour): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($tour['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($tour['name']); ?></td>
-                                    <td><?php echo htmlspecialchars($tour['destination']); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['title']); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['destination_name']); ?></td>
                                     <td>$<?php echo number_format($tour['price'], 2); ?></td>
                                     <td><?php echo htmlspecialchars($tour['duration']); ?> days</td>
                                     <td>
-                                        <span class="<?php echo $tour['status'] === 'active' ? 'status-active' : 'status-inactive'; ?>">
-                                            <?php echo ucfirst($tour['status']); ?>
+                                        <span>
+                                            <?php echo htmlspecialchars($tour['package_name']); ?>
                                         </span>
                                     </td>
-                                    <td><?php echo date('M j, Y', strtotime($tour['created_at'])); ?></td>
+                                    <td> <!-- No created_at column in tours table -->
+                                        N/A
+                                    </td>
                                     <td>
                                         <a href="#" class="action-btn edit-btn">Edit</a>
                                         <a href="#" class="action-btn delete-btn">Delete</a>
