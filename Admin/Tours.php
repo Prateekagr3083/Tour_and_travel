@@ -1,5 +1,5 @@
 <?php
-// Admin Dashboard - Access restricted to admin users only
+// Admin Tours Page - Access restricted to admin users only
 session_start();
 
 // Check if admin is logged in
@@ -16,30 +16,15 @@ $admin_id = $_SESSION['admin_id'];
 $admin_name = $_SESSION['admin_name'];
 $admin_email = $_SESSION['admin_email'];
 
-// Get statistics for dashboard
-$users_count = 0;
-$bookings_count = 0;
-$tours_count = 0;
+// Get all tours from database
+$tours = [];
+$sql = "SELECT * FROM tours ORDER BY created_at DESC";
+$result = $conn->query($sql);
 
-// Count total users
-$sql_users = "SELECT COUNT(*) as total_users FROM users WHERE role != 'admin'";
-$result_users = $conn->query($sql_users);
-if ($result_users) {
-    $users_count = $result_users->fetch_assoc()['total_users'];
-}
-
-// Count total bookings (assuming bookings table exists)
-$sql_bookings = "SELECT COUNT(*) as total_bookings FROM bookings";
-$result_bookings = $conn->query($sql_bookings);
-if ($result_bookings) {
-    $bookings_count = $result_bookings->fetch_assoc()['total_bookings'];
-}
-
-// Count total tours (assuming tours table exists)
-$sql_tours = "SELECT COUNT(*) as total_tours FROM tours";
-$result_tours = $conn->query($sql_tours);
-if ($result_tours) {
-    $tours_count = $result_tours->fetch_assoc()['total_tours'];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $tours[] = $row;
+    }
 }
 
 $conn->close();
@@ -49,7 +34,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Tour & Travel</title>
+    <title>Manage Tours - Admin Panel</title>
     <link rel="stylesheet" href="css/Admin.css">
     <style>
         * {
@@ -166,34 +151,7 @@ $conn->close();
             background: #c82333;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .dashboard-section {
+        .content-section {
             background: white;
             padding: 25px;
             border-radius: 10px;
@@ -205,6 +163,9 @@ $conn->close();
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .section-header h2 {
@@ -212,34 +173,90 @@ $conn->close();
             font-size: 1.3rem;
         }
         
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+        .add-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .add-btn:hover {
+            background: #218838;
+        }
+        
+        .tours-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .tours-table th,
+        .tours-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tours-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .tours-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-active {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .status-inactive {
+            color: #dc3545;
+            font-weight: 600;
         }
         
         .action-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
             text-decoration: none;
-            text-align: center;
-            transition: transform 0.2s;
+            display: inline-block;
+            font-size: 0.8rem;
         }
         
-        .action-btn:hover {
-            transform: translateY(-2px);
+        .edit-btn {
+            background: #ffc107;
+            color: #333;
         }
         
-        .coming-soon {
+        .edit-btn:hover {
+            background: #e0a800;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .no-tours {
             text-align: center;
             padding: 40px;
             color: #666;
         }
         
-        .coming-soon i {
+        .no-tours i {
             font-size: 3rem;
             margin-bottom: 15px;
             display: block;
@@ -256,7 +273,7 @@ $conn->close();
             </div>
             
             <ul class="nav-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="Dashboard.php" class="nav-link">
                         <i>📊</i> Dashboard
                     </a>
@@ -266,7 +283,7 @@ $conn->close();
                         <i>👥</i> Users
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a href="Tours.php" class="nav-link">
                         <i>🏨</i> Tours
                     </a>
@@ -289,55 +306,62 @@ $conn->close();
             <!-- Header -->
             <div class="header">
                 <div class="welcome-message">
-                    <h1>Welcome, <?php echo htmlspecialchars($admin_name); ?>!</h1>
-                    <p>Admin Dashboard - <?php echo date('F j, Y'); ?></p>
+                    <h1>Manage Tours</h1>
+                    <p>Admin Panel - <?php echo date('F j, Y'); ?></p>
                 </div>
                 <a href="logout.php" class="logout-btn">Logout</a>
             </div>
 
-            <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number"><?php echo $users_count; ?></div>
-                    <div class="stat-label">Total Users</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number"><?php echo $bookings_count; ?></div>
-                    <div class="stat-label">Total Bookings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number"><?php echo $tours_count; ?></div>
-                    <div class="stat-label">Total Tours</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Revenue</div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="dashboard-section">
+            <!-- Tours Section -->
+            <div class="content-section">
                 <div class="section-header">
-                    <h2>Quick Actions</h2>
+                    <h2>All Tours</h2>
+                    <a href="#" class="add-btn">Add New Tour</a>
                 </div>
-                <div class="quick-actions">
-                    <a href="#" class="action-btn">Add New Tour</a>
-                    <a href="#" class="action-btn">View Bookings</a>
-                    <a href="#" class="action-btn">Manage Users</a>
-                    <a href="#" class="action-btn">Reports</a>
-                </div>
-            </div>
 
-            <!-- Recent Activity -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>Recent Activity</h2>
-                </div>
-                <div class="coming-soon">
-                    <i>📈</i>
-                    <h3>Activity Tracking</h3>
-                    <p>This feature will be available soon</p>
-                </div>
+                <?php if (!empty($tours)): ?>
+                    <table class="tours-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tour Name</th>
+                                <th>Destination</th>
+                                <th>Price</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($tours as $tour): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($tour['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['destination']); ?></td>
+                                    <td>$<?php echo number_format($tour['price'], 2); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['duration']); ?> days</td>
+                                    <td>
+                                        <span class="<?php echo $tour['status'] === 'active' ? 'status-active' : 'status-inactive'; ?>">
+                                            <?php echo ucfirst($tour['status']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo date('M j, Y', strtotime($tour['created_at'])); ?></td>
+                                    <td>
+                                        <a href="#" class="action-btn edit-btn">Edit</a>
+                                        <a href="#" class="action-btn delete-btn">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="no-tours">
+                        <i>🏨</i>
+                        <h3>No Tours Found</h3>
+                        <p>There are no tours available in the system.</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </main>
     </div>
