@@ -23,50 +23,54 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Reviews - Tour & Travel</title>
     <link rel="stylesheet" href="css/Admin.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/reviews.css" />
+    <script src="js/sidebar.js"></script>
+    <script src="js/reviews.js"></script>
 </head>
 <body>
-    <?php include 'sidebar.php'; ?>
-    <div class="main-content">
-        <header class="header">
-            <div class="welcome-message">
-                <h1>Reviews Management</h1>
-                <p>Manage all tour reviews</p>
+    <div class="admin-container">
+        <?php include 'sidebar.php'; ?>
+        <main class="main-content">
+            <div class="header">
+                <div class="welcome-message">
+                    <h1>Reviews Management</h1>
+                    <p>Manage all tour reviews</p>
+                </div>
+                <a href="logout.php" class="logout-btn">Logout</a>
             </div>
-            <a href="logout.php" class="logout-btn">Logout</a>
-        </header>
-        <section class="content-section">
-            <?php if ($result && $result->num_rows > 0): ?>
-            <table class="reviews-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>User</th>
-                        <th>Tour</th>
-                        <th>Rating</th>
-                        <th>Comment</th>
-                        <th>Review Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
-                        <td><?php echo htmlspecialchars($row['title']); ?></td>
-                        <td><?php echo htmlspecialchars($row['rating']); ?></td>
-                        <td><?php echo htmlspecialchars($row['comment']); ?></td>
-                        <td><?php echo htmlspecialchars($row['review_date']); ?></td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-            <?php else: ?>
-            <p class="no-reviews">No reviews found.</p>
-            <?php endif; ?>
-        </section>
+            <div class="content-section">
+                <?php if ($result && $result->num_rows > 0): ?>
+                <table class="reviews-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Tour</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Review Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['title']); ?></td>
+                            <td><?php echo htmlspecialchars($row['rating']); ?></td>
+                            <td><?php echo htmlspecialchars($row['comment']); ?></td>
+                            <td><?php echo htmlspecialchars($row['review_date']); ?></td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+                <?php else: ?>
+                <p class="no-reviews">No reviews found.</p>
+                <?php endif; ?>
+            </div>
+        </main>
     </div>
-    <script src="js/reviews.js"></script>
 </body>
 </html>
 <?php $conn->close(); ?>
