@@ -58,7 +58,7 @@ $conn->close();
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="Users.php" class="nav-link">
                         <i>👥</i> Users
                     </a>
                 </li>
