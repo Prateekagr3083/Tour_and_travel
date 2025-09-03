@@ -99,7 +99,7 @@ $conn->close();
                     <a href="Tours.php" class="action-btn">Add New Tour</a>
                     <a href="Bookings.php" class="action-btn">View Bookings</a>
                     <a href="Users.php" class="action-btn">Manage Users</a>
-                    <a href="#" class="action-btn">Reports</a>
+                    <a href="Payments.php" class="action-btn">Payments</a>
                 </div>
             </div>
 
