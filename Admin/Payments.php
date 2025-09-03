@@ -95,19 +95,19 @@ $conn->close();
             <!-- Payment Summary -->
             <div class="payment-summary">
                 <div class="summary-card">
-                    <div class="summary-amount">$<?php echo number_format($total_payments, 2); ?></div>
+                    <div class="summary-amount">₹<?php echo number_format($total_payments, 2); ?></div>
                     <div class="summary-label">Total Payments</div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-amount amount-positive">$<?php echo number_format($completed_payments, 2); ?></div>
+                    <div class="summary-amount amount-positive">₹<?php echo number_format($completed_payments, 2); ?></div>
                     <div class="summary-label">Completed</div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-amount">$<?php echo number_format($pending_payments, 2); ?></div>
+                    <div class="summary-amount">₹<?php echo number_format($pending_payments, 2); ?></div>
                     <div class="summary-label">Pending</div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-amount amount-negative">$<?php echo number_format($failed_payments, 2); ?></div>
+                    <div class="summary-amount amount-negative">₹<?php echo number_format($failed_payments, 2); ?></div>
                     <div class="summary-label">Failed</div>
                 </div>
             </div>
@@ -150,7 +150,7 @@ $conn->close();
             <div class="content-section">
                 <div class="section-header">
                     <h2>All Transactions</h2>
-                    <a href="#" class="action-btn edit-btn">Export Report</a>
+                    <a href="#" class="action-btn edit-btn" style="white-space: nowrap; padding: 10px 15px; font-size: 0.9rem;">Export Report</a>
                 </div>
 
                 <?php if (!empty($payments)): ?>
