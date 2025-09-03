@@ -127,9 +127,9 @@ $conn->close();
                     <h2>Quick Actions</h2>
                 </div>
                 <div class="quick-actions">
-                    <a href="#" class="action-btn">Add New Tour</a>
-                    <a href="#" class="action-btn">View Bookings</a>
-                    <a href="#" class="action-btn">Manage Users</a>
+                    <a href="Tours.php" class="action-btn">Add New Tour</a>
+                    <a href="Bookings.php" class="action-btn">View Bookings</a>
+                    <a href="Users.php" class="action-btn">Manage Users</a>
                     <a href="#" class="action-btn">Reports</a>
                 </div>
             </div>
