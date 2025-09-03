@@ -18,10 +18,10 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all bookings from database with user and tour information
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, u.email as user_email, 
+$sql = "SELECT b.id, b.booking_date, b.status, u.email as user_email,
         t.title as tour_name, d.name as destination_name
-        FROM bookings b 
-        JOIN users u ON b.user_id = u.id 
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
         JOIN tours t ON b.tour_id = t.id
         LEFT JOIN destinations d ON t.destination_id = d.id
         ORDER BY b.booking_date DESC";
@@ -139,7 +139,6 @@ $conn->close();
                                 <tr>
                                     <td><?php echo htmlspecialchars($booking['id']); ?></td>
                                     <td>
-                                        <div><?php echo htmlspecialchars($booking['user_name']); ?></div>
                                         <small><?php echo htmlspecialchars($booking['user_email']); ?></small>
                                     </td>
                                     <td><?php echo htmlspecialchars($booking['tour_name']); ?></td>
