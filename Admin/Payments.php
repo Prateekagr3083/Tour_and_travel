@@ -16,79 +16,50 @@ $admin_id = $_SESSION['admin_id'];
 $admin_name = $_SESSION['admin_name'];
 $admin_email = $_SESSION['admin_email'];
 
-// Get all payments/transactions from database
-// Note: This assumes a 'payments' table exists. Adjust table name and columns as needed.
 $payments = [];
 $total_payments = 0;
 $completed_payments = 0;
 $pending_payments = 0;
 $failed_payments = 0;
 
-// Sample query - replace with actual table structure
-$sql = "SELECT id, user_id, amount, currency, status, payment_method, transaction_id, created_at
-        FROM payments
-        ORDER BY created_at DESC";
+// Since no payments table exists, we will derive payments from bookings table as a proxy
+// Assuming bookings table has: id, user_id, tour_id, booking_date, status
+// We'll treat bookings with status 'confirmed' as completed payments, others as pending or failed
+
+$sql = "SELECT b.id, b.user_id, b.tour_id, b.booking_date, b.status, t.price, t.title
+        FROM bookings b
+        LEFT JOIN tours t ON b.tour_id = t.id
+        ORDER BY b.booking_date DESC";
 
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $payments[] = $row;
-        $total_payments += $row['amount'];
-
-        switch ($row['status']) {
-            case 'completed':
-                $completed_payments += $row['amount'];
-                break;
-            case 'pending':
-                $pending_payments += $row['amount'];
-                break;
-            case 'failed':
-                $failed_payments += $row['amount'];
-                break;
+        $payment_status = 'pending';
+        if ($row['status'] === 'confirmed') {
+            $payment_status = 'completed';
+            $completed_payments += $row['price'];
+        } elseif ($row['status'] === 'cancelled') {
+            $payment_status = 'failed';
+            $failed_payments += $row['price'];
+        } else {
+            $pending_payments += $row['price'];
         }
+
+        $payments[] = [
+            'id' => $row['id'],
+            'user_id' => $row['user_id'],
+            'amount' => $row['price'],
+            'currency' => 'USD',
+            'status' => $payment_status,
+            'payment_method' => 'N/A',
+            'transaction_id' => 'N/A',
+            'created_at' => $row['booking_date'],
+            'tour_title' => $row['title']
+        ];
+
+        $total_payments += $row['price'];
     }
-}
-
-// If no payments table exists, show sample data
-if (empty($payments)) {
-    $payments = [
-        [
-            'id' => 1,
-            'user_id' => 101,
-            'amount' => 299.99,
-            'currency' => 'USD',
-            'status' => 'completed',
-            'payment_method' => 'Credit Card',
-            'transaction_id' => 'TXN_001234567',
-            'created_at' => '2024-01-15 10:30:00'
-        ],
-        [
-            'id' => 2,
-            'user_id' => 102,
-            'amount' => 149.50,
-            'currency' => 'USD',
-            'status' => 'pending',
-            'payment_method' => 'PayPal',
-            'transaction_id' => 'TXN_001234568',
-            'created_at' => '2024-01-14 15:45:00'
-        ],
-        [
-            'id' => 3,
-            'user_id' => 103,
-            'amount' => 499.99,
-            'currency' => 'USD',
-            'status' => 'completed',
-            'payment_method' => 'Bank Transfer',
-            'transaction_id' => 'TXN_001234569',
-            'created_at' => '2024-01-13 09:15:00'
-        ]
-    ];
-
-    $total_payments = 949.48;
-    $completed_payments = 799.98;
-    $pending_payments = 149.50;
-    $failed_payments = 0;
 }
 
 $conn->close();
