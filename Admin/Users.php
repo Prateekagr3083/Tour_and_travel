@@ -36,45 +36,15 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Manage Users - Admin Panel</title>
     <link rel="stylesheet" href="css/Admin.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/users.css" />
+    <script src="js/sidebar.js"></script>
+    <script src="js/users.js"></script>
 </head>
 <body>
     <div class="admin-container">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h2>Admin Panel</h2>
-                <p>Tour & Travel Management</p>
-            </div>
-
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="Dashboard.php" class="nav-link">
-                        <i>📊</i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a href="Users.php" class="nav-link">
-                        <i>👥</i> Users
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="Tours.php" class="nav-link">
-                        <i>🏨</i> Tours
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="Bookings.php" class="nav-link">
-                        <i>📋</i> Bookings
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i>⚙️</i> Settings
-                    </a>
-                </li>
-            </ul>
-        </aside>
+        <?php include 'sidebar.php'; ?>
 
         <!-- Main Content -->
         <main class="main-content">
