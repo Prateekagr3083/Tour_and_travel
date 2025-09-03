@@ -18,7 +18,7 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all bookings from database with user and tour information
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, u.name as user_name, u.email as user_email, 
+$sql = "SELECT b.id, b.booking_date, b.status, u.username as user_name, u.email as user_email, 
         t.title as tour_name, d.name as destination_name
         FROM bookings b 
         JOIN users u ON b.user_id = u.id 
