@@ -1,0 +1,64 @@
+Root PHP files:
+- Home.php: Home page
+- Login.php: Login page
+- Register.php: Registration page
+- test_session.php: Session test script
+
+Admin directory:
+- Admin/Bookings.php: Bookings management
+- Admin/create_admin.php: Create admin user
+- Admin/Dashboard.php: Admin dashboard
+- Admin/Login.php: Admin login
+- Admin/logout.php: Admin logout
+- Admin/Payments.php: Payments management
+- Admin/Reviews.php: Reviews management
+- Admin/sidebar.php: Admin sidebar layout
+- Admin/Tours.php: Tours management
+- Admin/Users.php: Users management
+
+Admin CSS:
+- Admin/css/Admin.css: Admin styles
+- Admin/css/bookings.css: Bookings styles
+- Admin/css/payments.css: Payments styles
+- Admin/css/reviews.css: Reviews styles
+- Admin/css/sidebar.css: Sidebar styles
+- Admin/css/tours.css: Tours styles
+- Admin/css/users.css: Users styles
+
+Admin JS:
+- Admin/js/admin-session.js: Admin session handling
+- Admin/js/bookings.js: Bookings scripts
+- Admin/js/payments.js: Payments scripts
+- Admin/js/reviews.js: Reviews scripts
+- Admin/js/sidebar.js: Sidebar scripts
+- Admin/js/tours.js: Tours scripts
+- Admin/js/users.js: Users scripts
+
+CSS directory:
+- CSS/Global.css: Global styles
+- CSS/Home.css: Home page styles
+- CSS/Login.css: Login page styles
+- CSS/Nave.css: Navigation styles
+
+Database directory:
+- Database/db_connect.php: Database connection
+- Database/db_config.php: Database config
+- Database/heartbeat.php: Heartbeat check
+- Database/logout.php: Logout script
+
+Navbar directory:
+- Navbar/Nave.php: Navigation bar
+
+Scripts directory:
+- Scripts/login.js: Login scripts
+- Scripts/session-handler.js: Session handling scripts
+
+Icons directory:
+- Icons/user.png: User icon
+- Icons/Web site logo.png: Website logo
+
+Project image directory:
+- project image/: Various images used in the project
+
+Workflow:
+Tour and Travel website with user login, registration, admin panel for managing tours, bookings, users, payments, and reviews. Frontend styled with CSS and interactive with JS.
