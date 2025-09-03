@@ -33,6 +33,11 @@
                 <i>⭐</i> Reviews
             </a>
         </li>
+        <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'Payments.php' ? 'active' : ''; ?>">
+            <a href="Payments.php" class="nav-link">
+                <i>💳</i> Payments
+            </a>
+        </li>
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i>⚙️</i> Settings
