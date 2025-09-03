@@ -18,7 +18,7 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all users from database
 $users = [];
-$sql = "SELECT id, username, email FROM users ORDER BY id DESC";
+$sql = "SELECT id, email FROM users ORDER BY id DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -36,62 +36,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Manage Users - Admin Panel</title>
     <link rel="stylesheet" href="css/Admin.css" />
-    <style>
-        /* Additional styles specific to users page */
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .users-table th,
-        .users-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .users-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #333;
-        }
-        .users-table tr:hover {
-            background: #f8f9fa;
-        }
-        .action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 5px;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 0.8rem;
-        }
-        .edit-btn {
-            background: #ffc107;
-            color: #333;
-        }
-        .edit-btn:hover {
-            background: #e0a800;
-        }
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-        }
-        .delete-btn:hover {
-            background: #c82333;
-        }
-        .no-users {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        .no-users i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            display: block;
-        }
-    </style>
+    <link rel="stylesheet" href="css/users.css" />
 </head>
 <body>
     <div class="admin-container">
@@ -154,7 +99,6 @@ $conn->close();
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Username</th>
                                 <th>Email</th>
                                 <th>Actions</th>
                             </tr>
@@ -163,7 +107,6 @@ $conn->close();
                             <?php foreach ($users as $user): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($user['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
                                     <td><?php echo htmlspecialchars($user['email']); ?></td>
                                     <td>
                                         <a href="#" class="action-btn edit-btn">Edit</a>
