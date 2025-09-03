@@ -1,0 +1,30 @@
+/* Reviews Management Styles */
+.reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.reviews-table th,
+.reviews-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.reviews-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.reviews-table tr:hover {
+    background: #f8f9fa;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 1.1rem;
+}
