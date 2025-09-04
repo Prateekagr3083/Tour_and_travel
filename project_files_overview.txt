@@ -65,4 +65,4 @@ Tour and Travel website with user login, registration, admin panel for managing 
 stable comit id-- 348a0a2eaf7b5a52c089c6dbe713c7fdaf5c5ed4
 Sep 3, 2025, 7:43 PM   git config --global credential.helper manager
 git credential-manager erase
-check foe auto update 2
+check foe auto update 2233
