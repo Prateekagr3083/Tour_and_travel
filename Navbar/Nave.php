@@ -7,6 +7,9 @@
             <li class="nav-item">
                 <a href="Home.php" class="nav-link">Home</a>
             </li>
+            <li class="nav-item">
+                <a href="Tours.php" class="nav-link">Tours</a>
+            </li>
             <?php
             // Start session if not already started
             if (session_status() === PHP_SESSION_NONE) {

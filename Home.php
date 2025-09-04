@@ -18,7 +18,7 @@
         </div>
         <div class="container">
             <h1>DISCOVER YOUR NEXT TRIP</h1>
-            <a href="#" class="btn">VIEW TOURS</a>
+            <a href="Tours.php" class="btn">VIEW TOURS</a>
         </div>
     </main>
 </body>
