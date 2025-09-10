@@ -44,6 +44,7 @@ $conn->close();
     <link rel="stylesheet" href="css/tours.css">
     <script src="js/sidebar.js"></script>
     <script src="js/tours.js"></script>
+    <script src="js/add_tour.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -57,6 +58,20 @@ $conn->close();
                 <div class="welcome-message">
                     <h1>Manage Tours</h1>
                     <p>Admin Panel - <?php echo date('F j, Y'); ?></p>
+                    <?php
+                    if (isset($_SESSION['add_tour_errors'])) {
+                        echo '<div class="error-message">';
+                        foreach ($_SESSION['add_tour_errors'] as $error) {
+                            echo '<p>' . htmlspecialchars($error) . '</p>';
+                        }
+                        echo '</div>';
+                        unset($_SESSION['add_tour_errors']);
+                    }
+                    if (isset($_SESSION['add_tour_success'])) {
+                        echo '<div class="success-message" style="color: green; margin-top: 10px;">' . htmlspecialchars($_SESSION['add_tour_success']) . '</div>';
+                        unset($_SESSION['add_tour_success']);
+                    }
+                    ?>
                 </div>
                 <a href="logout.php" class="logout-btn">Logout</a>
             </div>
@@ -65,8 +80,10 @@ $conn->close();
             <div class="content-section">
                 <div class="section-header">
                     <h2>All Tours</h2>
-                    <a href="#" class="add-btn">Add New Tour</a>
-                </div>
+                <button type="button" class="add-btn" id="add-tour-btn">Add New Tour</button>
+            </div>
+
+            <?php include 'add_tour_form.php'; ?>
 
                 <?php if (!empty($tours)): ?>
                     <table class="tours-table">
