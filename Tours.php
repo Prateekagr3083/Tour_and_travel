@@ -53,7 +53,7 @@ $conn->close();
                     <?php foreach ($tours as $tour): ?>
                         <div class="card" data-tour-id="<?php echo htmlspecialchars($tour['id']); ?>">
                             <div class="image_container">
-                                <img src="<?php echo htmlspecialchars($tour['image_path'] ?? 'project image/default-tour.jpg'); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="tour-image">
+                                <img src="<?php echo htmlspecialchars($tour['image_url'] ?? 'project image/default-tour.jpg'); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="tour-image">
                             </div>
                             <div class="title">
                                 <span><?php echo htmlspecialchars($tour['title']); ?></span>
@@ -63,7 +63,7 @@ $conn->close();
                             </div>
                             <div class="action">
                                 <div class="price">
-                                    <span>$<?php echo number_format($tour['price'], 2); ?></span>
+                                    <span>₹<?php echo number_format($tour['price'], 2); ?></span>
                                 </div>
                                 <button class="cart-button">
                                     <span>View Details</span>

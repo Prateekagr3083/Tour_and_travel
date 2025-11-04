@@ -14,8 +14,8 @@ $description = isset($_POST['description']) ? trim($_POST['description']) : '';
 $location = isset($_POST['location']) ? trim($_POST['location']) : '';
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
 $duration = isset($_POST['duration']) ? intval($_POST['duration']) : 0;
-$destination_id = isset($_POST['destination_id']) ? intval($_POST['destination_id']) : 0;
-$package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
+$destination_id = 0; // No longer used as destination is text input
+$package_id = 0; // No longer used as package selection removed
 
 // Basic validation
 $errors = [];
@@ -35,12 +35,13 @@ if ($price <= 0) {
 if ($duration <= 0) {
     $errors[] = "Duration must be at least 1 day.";
 }
-if ($destination_id <= 0) {
-    $errors[] = "Please select a valid destination.";
-}
-if ($package_id <= 0) {
-    $errors[] = "Please select a valid package.";
-}
+// Remove validation for destination_id and package_id as they are no longer form fields
+// if ($destination_id <= 0) {
+//     $errors[] = "Please select a valid destination.";
+// }
+// if ($package_id <= 0) {
+//     $errors[] = "Please select a valid package.";
+// }
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     $errors[] = "Image upload failed or missing.";
 }
@@ -53,8 +54,8 @@ if (!empty($errors)) {
 }
 
 // Insert tour into database
-$stmt = $conn->prepare("INSERT INTO tours (title, description, price, location, duration, destination_id, package_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssdsiis", $title, $description, $price, $location, $duration, $destination_id, $package_id);
+$stmt = $conn->prepare("INSERT INTO tours (title, description, price, location, duration) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("ssdsi", $title, $description, $price, $location, $duration);
 
 if (!$stmt->execute()) {
     $_SESSION['add_tour_errors'] = ["Database error: " . $stmt->error];

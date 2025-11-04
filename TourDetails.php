@@ -95,7 +95,7 @@ $conn->close();
 
                 <div class="tour-info">
                     <div class="info-item">
-                        <strong>Price:</strong> $<?php echo number_format($tour['price'], 2); ?>
+                        <strong>Price:</strong> ₹<?php echo number_format($tour['price'], 2); ?>
                     </div>
                     <div class="info-item">
                         <strong>Duration:</strong> <?php echo htmlspecialchars($tour['duration']); ?> days

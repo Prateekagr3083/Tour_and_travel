@@ -105,7 +105,7 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($tour['id']); ?></td>
                                     <td><?php echo htmlspecialchars($tour['title']); ?></td>
                                     <td><?php echo htmlspecialchars($tour['destination_name']); ?></td>
-                                    <td>$<?php echo number_format($tour['price'], 2); ?></td>
+                                    <td>₹<?php echo number_format($tour['price'], 2); ?></td>
                                     <td><?php echo htmlspecialchars($tour['duration']); ?> days</td>
                                     <td>
                                         <span>
