@@ -22,10 +22,10 @@
             <label for="duration">Duration (days):</label>
             <input type="number" id="duration" name="duration" min="1" required>
         </div>
-        <div class="form-group">
+       <!-- <div class="form-group">
             <label for="destination">Destination:</label>
             <input type="text" id="destination" name="location" required>
-        </div>
+        </div> -->
         <div class="form-group">
             <label for="image">Tour Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
