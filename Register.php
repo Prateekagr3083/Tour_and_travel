@@ -1,4 +1,7 @@
 <?php
+// Include session configuration
+include 'session_config.php';
+
 // Include database connection
 include 'Database/db_connect.php';
 
@@ -11,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    $gender = mysqli_real_escape_string($conn, $_POST['gender']);
+    $gender = mysqli_real_escape_string($conn, ucfirst(strtolower($_POST['gender'])));
     $terms_accepted = isset($_POST['terms']) ? 1 : 0; // Handle terms acceptance
     
     // Validate passwords match
@@ -40,8 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Get the newly created user ID
         $user_id = $conn->insert_id;
         
-        // Start session and set user_id
-        session_start();
         $_SESSION['user_id'] = $user_id;
         
         echo "<script>alert('Registration successful!'); window.location.href='Home.php';</script>";

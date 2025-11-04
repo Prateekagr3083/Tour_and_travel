@@ -1,38 +1,4 @@
-<?php
-// Admin Tours Page - Access restricted to admin users only
-session_start();
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id']) || $_SESSION['admin_role'] !== 'admin') {
-    header("Location: Login.php");
-    exit();
-}
-
-// Include database connection
-include '../Database/db_connect.php';
-
-// Get admin information
-$admin_id = $_SESSION['admin_id'];
-$admin_name = $_SESSION['admin_name'];
-$admin_email = $_SESSION['admin_email'];
-
-// Get all tours from database with destination and package names
-$tours = [];
-$sql = "SELECT t.id, t.title, d.name AS destination_name, t.price, t.duration, p.name AS package_name
-        FROM tours t
-        LEFT JOIN destinations d ON t.destination_id = d.id
-        LEFT JOIN tour_packages p ON t.package_id = p.id
-        ORDER BY t.id DESC";
-$result = $conn->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $tours[] = $row;
-    }
-}
-
-$conn->close();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,8 +82,8 @@ $conn->close();
                                         N/A
                                     </td>
                                     <td>
-                                        <a href="#" class="action-btn edit-btn">Edit</a>
-                                        <a href="#" class="action-btn delete-btn">Delete</a>
+                                        <a href="edit_tour.php?id=<?php echo $tour['id']; ?>" class="action-btn edit-btn">Edit</a>
+                                        <a href="#" class="action-btn delete-btn" onclick="deleteTour(<?php echo $tour['id']; ?>)">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -133,5 +99,13 @@ $conn->close();
             </div>
         </main>
     </div>
+
+    <script>
+    function deleteTour(tourId) {
+        if (confirm('Are you sure you want to delete this tour? This action cannot be undone.')) {
+            window.location.href = 'process_delete_tour.php?id=' + tourId;
+        }
+    }
+    </script>
 </body>
 </html>

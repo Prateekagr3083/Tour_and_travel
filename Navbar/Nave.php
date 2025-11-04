@@ -10,17 +10,20 @@
             <li class="nav-item">
                 <a href="Tours.php" class="nav-link">Tours</a>
             </li>
+            <li class="nav-item">
+                <a href="Terms.php" class="nav-link">Terms & Conditions</a>
+            </li>
             <?php
             // Start session if not already started
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
-            
+
             // Check if user is logged in
             if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
                 // User is logged in, show avatar with dropdown
                 $fullName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'User';
-                
+
                 // Extract first name for display
                 if (isset($_SESSION['first_name']) && !empty($_SESSION['first_name'])) {
                     $userName = $_SESSION['first_name'];
@@ -28,13 +31,13 @@
                     // Extract first name from full name or email
                     $nameParts = explode(' ', $fullName);
                     $userName = $nameParts[0];
-                    
+
                     // If it's an email, extract the part before @
                     if (strpos($userName, '@') !== false) {
                         $userName = explode('@', $userName)[0];
                     }
                 }
-                
+
                 // Ensure username is not empty
                 if (empty($userName)) {
                     $userName = 'User';
@@ -47,10 +50,10 @@
                         <i class="dropdown-arrow">▼</i>
                     </div>
                     <div class="auth-dropdown" id="userDropdown">
-                        <a href="#" class="dropdown-item" onclick="showProfileMessage()">
+                        <a href="UserProfile.php" class="dropdown-item">
                             <i class="icon">👤</i> My Profile
                         </a>
-                        <a href="#" class="dropdown-item" onclick="showBookingsMessage()">
+                        <a href="MyBookings.php" class="dropdown-item">
                             <i class="icon">📋</i> My Bookings
                         </a>
                         <div class="dropdown-divider"></div>
@@ -94,7 +97,7 @@ function toggleDropdown() {
 document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('userDropdown');
     const avatar = document.querySelector('.user-avatar');
-    
+
     if (!avatar.contains(event.target)) {
         dropdown.style.display = 'none';
     }

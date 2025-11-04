@@ -30,18 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rating.innerHTML = `Rating: ${stars}`;
     });
 
-    // Optional: Add back to tours button functionality
-    const backButton = document.createElement('button');
-    backButton.textContent = 'Back to Tours';
-    backButton.className = 'back-button';
-    backButton.addEventListener('click', function() {
-        window.location.href = 'Tours.php';
-    });
-
-    const tourHeader = document.querySelector('.tour-header');
-    if (tourHeader) {
-        tourHeader.appendChild(backButton);
-    }
+    // Back to tours button functionality removed - using HTML button instead
 });
 
 // Add styles for the back button

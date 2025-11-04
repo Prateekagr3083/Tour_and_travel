@@ -1,6 +1,8 @@
 <?php
+// Include session configuration
+include 'session_config.php';
+
 // User-side Tours Page
-session_start();
 
 // Include database connection
 include 'Database/db_connect.php';
@@ -65,9 +67,9 @@ $conn->close();
                                 <div class="price">
                                     <span>₹<?php echo number_format($tour['price'], 2); ?></span>
                                 </div>
-                                <button class="cart-button">
+                                <a href="TourDetails.php?id=<?php echo htmlspecialchars($tour['id']); ?>" class="cart-button">
                                     <span>View Details</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     <?php endforeach; ?>

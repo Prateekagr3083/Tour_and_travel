@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .navbar {
     background-color: #004d00;
     padding: 1rem 0;

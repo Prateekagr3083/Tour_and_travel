@@ -23,11 +23,14 @@ $pending_payments = 0;
 $failed_payments = 0;
 
 // Since no payments table exists, we will derive payments from bookings table as a proxy
-// Assuming bookings table has: id, user_id, tour_id, booking_date, status
+// Assuming bookings table has: id, user_id, tour_id, booking_date, status, number_of_guests, total_price
 // We'll treat bookings with status 'confirmed' as completed payments, others as pending or failed
 
-$sql = "SELECT b.id, b.user_id, b.tour_id, b.booking_date, b.status, t.price, t.title
+$sql = "SELECT b.id, b.user_id, b.tour_id, b.booking_date, b.status, b.number_of_guests, b.total_price,
+        u.first_name, u.last_name, u.email,
+        t.title as tour_name
         FROM bookings b
+        LEFT JOIN users u ON b.user_id = u.id
         LEFT JOIN tours t ON b.tour_id = t.id
         ORDER BY b.booking_date DESC";
 
@@ -36,29 +39,34 @@ $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $payment_status = 'pending';
+        $amount = $row['total_price'];
+
         if ($row['status'] === 'confirmed') {
             $payment_status = 'completed';
-            $completed_payments += $row['price'];
+            $completed_payments += $amount;
         } elseif ($row['status'] === 'cancelled') {
             $payment_status = 'failed';
-            $failed_payments += $row['price'];
+            $failed_payments += $amount;
         } else {
-            $pending_payments += $row['price'];
+            $pending_payments += $amount;
         }
 
         $payments[] = [
             'id' => $row['id'],
             'user_id' => $row['user_id'],
-            'amount' => $row['price'],
-            'currency' => 'USD',
+            'user_name' => $row['first_name'] . ' ' . $row['last_name'],
+            'user_email' => $row['email'],
+            'amount' => $amount,
+            'currency' => 'INR',
             'status' => $payment_status,
-            'payment_method' => 'N/A',
-            'transaction_id' => 'N/A',
+            'payment_method' => 'Online Payment',
+            'transaction_id' => 'TXN' . str_pad($row['id'], 6, '0', STR_PAD_LEFT),
             'created_at' => $row['booking_date'],
-            'tour_title' => $row['title']
+            'tour_name' => $row['tour_name'],
+            'guests' => $row['number_of_guests']
         ];
 
-        $total_payments += $row['price'];
+        $total_payments += $amount;
     }
 }
 
@@ -88,6 +96,16 @@ $conn->close();
                 <div class="welcome-message">
                     <h1>Manage Payments</h1>
                     <p>Admin Panel - <?php echo date('F j, Y'); ?></p>
+                    <?php
+                    if (isset($_SESSION['payment_success'])) {
+                        echo '<div class="success-message" style="color: green; margin-top: 10px;">' . htmlspecialchars($_SESSION['payment_success']) . '</div>';
+                        unset($_SESSION['payment_success']);
+                    }
+                    if (isset($_SESSION['payment_error'])) {
+                        echo '<div class="error-message" style="color: red; margin-top: 10px;">' . htmlspecialchars($_SESSION['payment_error']) . '</div>';
+                        unset($_SESSION['payment_error']);
+                    }
+                    ?>
                 </div>
                 <a href="logout.php" class="logout-btn">Logout</a>
             </div>
@@ -96,7 +114,7 @@ $conn->close();
             <div class="payment-summary">
                 <div class="summary-card">
                     <div class="summary-amount">₹<?php echo number_format($total_payments, 2); ?></div>
-                    <div class="summary-label">Total Payments</div>
+                    <div class="summary-label">Total Revenue</div>
                 </div>
                 <div class="summary-card">
                     <div class="summary-amount amount-positive">₹<?php echo number_format($completed_payments, 2); ?></div>
@@ -122,16 +140,6 @@ $conn->close();
                             <option value="completed">Completed</option>
                             <option value="pending">Pending</option>
                             <option value="failed">Failed</option>
-                            <option value="refunded">Refunded</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="method-filter">Payment Method</label>
-                        <select id="method-filter" name="method">
-                            <option value="">All Methods</option>
-                            <option value="credit_card">Credit Card</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="bank_transfer">Bank Transfer</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -150,7 +158,7 @@ $conn->close();
             <div class="content-section">
                 <div class="section-header">
                     <h2>All Transactions</h2>
-                    <a href="#" class="action-btn edit-btn" style="white-space: nowrap; padding: 10px 15px; font-size: 0.9rem;">Export Report</a>
+                    <button type="button" class="action-btn edit-btn" onclick="exportReport()">Export Report</button>
                 </div>
 
                 <?php if (!empty($payments)): ?>
@@ -158,7 +166,8 @@ $conn->close();
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>User ID</th>
+                                <th>Customer</th>
+                                <th>Tour</th>
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Payment Method</th>
@@ -171,8 +180,12 @@ $conn->close();
                             <?php foreach ($payments as $payment): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($payment['id']); ?></td>
-                                    <td><?php echo htmlspecialchars($payment['user_id']); ?></td>
-                                    <td>$<?php echo number_format($payment['amount'], 2); ?></td>
+                                    <td>
+                                        <div><?php echo htmlspecialchars($payment['user_name']); ?></div>
+                                        <small><?php echo htmlspecialchars($payment['user_email']); ?></small>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($payment['tour_name']); ?></td>
+                                    <td>₹<?php echo number_format($payment['amount'], 2); ?></td>
                                     <td>
                                         <span class="status-<?php echo htmlspecialchars($payment['status']); ?>">
                                             <?php echo ucfirst(htmlspecialchars($payment['status'])); ?>
@@ -182,23 +195,10 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($payment['transaction_id']); ?></td>
                                     <td><?php echo date('M j, Y H:i', strtotime($payment['created_at'])); ?></td>
                                     <td>
-                                        <a href="#" class="payment-action-btn view-btn">View</a>
+                                        <a href="view_payment.php?id=<?php echo $payment['id']; ?>" class="payment-action-btn view-btn">View</a>
                                         <?php if ($payment['status'] === 'completed'): ?>
-                                            <a href="#" class="payment-action-btn refund-btn">Refund</a>
+                                            <a href="#" class="payment-action-btn refund-btn" onclick="processRefund(<?php echo $payment['id']; ?>)">Refund</a>
                                         <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <tr class="transaction-details-row" style="display: none;">
-                                    <td colspan="8">
-                                        <div class="transaction-details">
-                                            <h4>Transaction Details</h4>
-                                            <p><strong>Transaction ID:</strong> <?php echo htmlspecialchars($payment['transaction_id']); ?></p>
-                                            <p><strong>User ID:</strong> <?php echo htmlspecialchars($payment['user_id']); ?></p>
-                                            <p><strong>Amount:</strong> $<?php echo number_format($payment['amount'], 2); ?> <?php echo htmlspecialchars($payment['currency']); ?></p>
-                                            <p><strong>Payment Method:</strong> <?php echo htmlspecialchars($payment['payment_method']); ?></p>
-                                            <p><strong>Status:</strong> <?php echo ucfirst(htmlspecialchars($payment['status'])); ?></p>
-                                            <p><strong>Date:</strong> <?php echo htmlspecialchars($payment['created_at']); ?></p>
-                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -214,5 +214,17 @@ $conn->close();
             </div>
         </main>
     </div>
+
+    <script>
+    function exportReport() {
+        alert('Export functionality will be implemented soon.');
+    }
+
+    function processRefund(paymentId) {
+        if (confirm('Are you sure you want to process a refund for this payment?')) {
+            alert('Refund functionality will be implemented soon.');
+        }
+    }
+    </script>
 </body>
 </html>

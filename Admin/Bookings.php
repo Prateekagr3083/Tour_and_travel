@@ -18,7 +18,8 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all bookings from database with user and tour information
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, u.email as user_email,
+$sql = "SELECT b.id, b.booking_date, b.status, b.number_of_guests, b.total_price,
+        u.first_name, u.last_name, u.email as user_email,
         t.title as tour_name, d.name as destination_name
         FROM bookings b
         JOIN users u ON b.user_id = u.id
@@ -59,6 +60,16 @@ $conn->close();
                 <div class="welcome-message">
                     <h1>Manage Bookings</h1>
                     <p>Admin Panel - <?php echo date('F j, Y'); ?></p>
+                    <?php
+                    if (isset($_SESSION['booking_success'])) {
+                        echo '<div class="success-message" style="color: green; margin-top: 10px;">' . htmlspecialchars($_SESSION['booking_success']) . '</div>';
+                        unset($_SESSION['booking_success']);
+                    }
+                    if (isset($_SESSION['booking_error'])) {
+                        echo '<div class="error-message" style="color: red; margin-top: 10px;">' . htmlspecialchars($_SESSION['booking_error']) . '</div>';
+                        unset($_SESSION['booking_error']);
+                    }
+                    ?>
                 </div>
                 <a href="logout.php" class="logout-btn">Logout</a>
             </div>
@@ -109,12 +120,13 @@ $conn->close();
                                 <tr>
                                     <td><?php echo htmlspecialchars($booking['id']); ?></td>
                                     <td>
+                                        <div><?php echo htmlspecialchars($booking['first_name'] . ' ' . $booking['last_name']); ?></div>
                                         <small><?php echo htmlspecialchars($booking['user_email']); ?></small>
                                     </td>
                                     <td><?php echo htmlspecialchars($booking['tour_name']); ?></td>
                                     <td><?php echo htmlspecialchars($booking['destination_name']); ?></td>
-                                    <td><!-- Guests column not in bookings table -->N/A</td>
-                                    <td><!-- Total price column not in bookings table -->N/A</td>
+                                    <td><?php echo htmlspecialchars($booking['number_of_guests']); ?></td>
+                                    <td>₹<?php echo number_format($booking['total_price'], 2); ?></td>
                                     <td><?php echo date('M j, Y', strtotime($booking['booking_date'])); ?></td>
                                     <td>
                                         <span class="status-<?php echo $booking['status']; ?>">
@@ -122,10 +134,10 @@ $conn->close();
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="#" class="action-btn view-btn">View</a>
+                                        <a href="view_booking.php?id=<?php echo $booking['id']; ?>" class="action-btn view-btn">View</a>
                                         <?php if ($booking['status'] === 'pending'): ?>
-                                            <a href="#" class="action-btn confirm-btn">Confirm</a>
-                                            <a href="#" class="action-btn cancel-btn">Cancel</a>
+                                            <a href="#" class="action-btn confirm-btn" onclick="updateBookingStatus(<?php echo $booking['id']; ?>, 'confirmed')">Confirm</a>
+                                            <a href="#" class="action-btn cancel-btn" onclick="updateBookingStatus(<?php echo $booking['id']; ?>, 'cancelled')">Cancel</a>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -142,5 +154,13 @@ $conn->close();
             </div>
         </main>
     </div>
+
+    <script>
+    function updateBookingStatus(bookingId, status) {
+        if (confirm('Are you sure you want to ' + status + ' this booking?')) {
+            window.location.href = 'process_booking_status.php?id=' + bookingId + '&status=' + status;
+        }
+    }
+    </script>
 </body>
 </html>

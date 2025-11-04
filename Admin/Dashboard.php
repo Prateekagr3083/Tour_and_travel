@@ -1,6 +1,8 @@
 <?php
+// Include session configuration
+include '../session_config.php';
+
 // Admin Dashboard - Access restricted to admin users only
-session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id']) || $_SESSION['admin_role'] !== 'admin') {

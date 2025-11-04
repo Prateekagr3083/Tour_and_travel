@@ -1,4 +1,7 @@
 <?php
+// Include session configuration
+include 'session_config.php';
+
 // Include database connection
 include 'Database/db_connect.php';
 
@@ -16,10 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         // Verify password
         if (password_verify($password, $row['password_hash'])) {
-            // Start session
-            session_start();
             $_SESSION['user_id'] = $row['id'];
-            $_SESSION['user_name'] = $row['name'] ?? $row['email']; // Store user name
+            $_SESSION['first_name'] = $row['first_name'];
+            $_SESSION['last_name'] = $row['last_name'];
             $_SESSION['user_email'] = $row['email'];
             
             // Check if user is admin and redirect accordingly

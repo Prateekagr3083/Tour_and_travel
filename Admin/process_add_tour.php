@@ -11,11 +11,10 @@ include '../Database/db_connect.php';
 // Validate and sanitize inputs
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 $description = isset($_POST['description']) ? trim($_POST['description']) : '';
-$location = isset($_POST['location']) ? trim($_POST['location']) : '';
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
 $duration = isset($_POST['duration']) ? intval($_POST['duration']) : 0;
-$destination_id = 0; // No longer used as destination is text input
-$package_id = 0; // No longer used as package selection removed
+$destination_id = isset($_POST['destination_id']) ? intval($_POST['destination_id']) : 0;
+$package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
 
 // Basic validation
 $errors = [];
@@ -26,36 +25,31 @@ if ($title === '') {
 if ($description === '') {
     $errors[] = "Description is required.";
 }
-if ($location === '') {
-    $errors[] = "Location is required.";
-}
 if ($price <= 0) {
     $errors[] = "Price must be greater than zero.";
 }
 if ($duration <= 0) {
     $errors[] = "Duration must be at least 1 day.";
 }
-// Remove validation for destination_id and package_id as they are no longer form fields
-// if ($destination_id <= 0) {
-//     $errors[] = "Please select a valid destination.";
-// }
-// if ($package_id <= 0) {
-//     $errors[] = "Please select a valid package.";
-// }
+if ($destination_id <= 0) {
+    $errors[] = "Please select a valid destination.";
+}
+if ($package_id <= 0) {
+    $errors[] = "Please select a valid package.";
+}
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     $errors[] = "Image upload failed or missing.";
 }
 
 if (!empty($errors)) {
-    // Handle errors (for simplicity, redirect back with error messages)
     $_SESSION['add_tour_errors'] = $errors;
     header("Location: Tours.php");
     exit();
 }
 
 // Insert tour into database
-$stmt = $conn->prepare("INSERT INTO tours (title, description, price, location, duration) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("ssdsi", $title, $description, $price, $location, $duration);
+$stmt = $conn->prepare("INSERT INTO tours (title, description, price, duration, destination_id, package_id) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssdiii", $title, $description, $price, $duration, $destination_id, $package_id);
 
 if (!$stmt->execute()) {
     $_SESSION['add_tour_errors'] = ["Database error: " . $stmt->error];
