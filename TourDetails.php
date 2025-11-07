@@ -84,12 +84,21 @@ $conn->close();
                 <h1><?php echo htmlspecialchars($tour['title']); ?></h1>
                 <div class="tour-content">
                     <div class="tour-gallery">
-                        <?php if (!empty($tour_images)): ?>
-                            <?php foreach ($tour_images as $img): ?>
-                                <img src="<?php echo htmlspecialchars($img['image_url']); ?>" alt="<?php echo htmlspecialchars($img['description'] ?? $tour['title']); ?>" class="gallery-image">
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <img src="project image/default-tour.jpg" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+                        <div class="image-slider">
+                            <?php if (!empty($tour_images)): ?>
+                                <?php foreach ($tour_images as $index => $img): ?>
+                                    <img src="<?php echo htmlspecialchars($img['image_url']); ?>" alt="<?php echo htmlspecialchars($img['description'] ?? $tour['title']); ?>" class="gallery-image <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <img src="project image/default-tour.jpg" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="gallery-image active">
+                            <?php endif; ?>
+                        </div>
+                        <?php if (count($tour_images) > 1): ?>
+                            <div class="slider-dots">
+                                <?php for ($i = 0; $i < count($tour_images); $i++): ?>
+                                    <span class="dot <?php echo $i === 0 ? 'active' : ''; ?>" data-slide="<?php echo $i; ?>"></span>
+                                <?php endfor; ?>
+                            </div>
                         <?php endif; ?>
                     </div>
 

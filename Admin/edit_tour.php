@@ -44,6 +44,14 @@ while ($row = $result_images->fetch_assoc()) {
     $tour_images[] = $row;
 }
 
+// Fetch packages for dropdown
+$packages = [];
+$pkg_sql = "SELECT id, name FROM tour_packages ORDER BY name";
+$pkg_result = $conn->query($pkg_sql);
+while ($pkg = $pkg_result->fetch_assoc()) {
+    $packages[] = $pkg;
+}
+
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -89,37 +97,8 @@ $conn->close();
                     </div>
 
                     <div class="form-group">
-                        <label for="destination">Destination:</label>
-                        <select id="destination" name="destination_id" required>
-                            <option value="">Select Destination</option>
-                            <?php
-                            $dest_conn = new mysqli("localhost", "root", "", "Tour_and_travel");
-                            $dest_sql = "SELECT id, name FROM destinations ORDER BY name";
-                            $dest_result = $dest_conn->query($dest_sql);
-                            while ($dest = $dest_result->fetch_assoc()) {
-                                $selected = ($dest['id'] == $tour['destination_id']) ? 'selected' : '';
-                                echo '<option value="' . $dest['id'] . '" ' . $selected . '>' . htmlspecialchars($dest['name']) . '</option>';
-                            }
-                            $dest_conn->close();
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="package">Tour Package:</label>
-                        <select id="package" name="package_id" required>
-                            <option value="">Select Package</option>
-                            <?php
-                            $pkg_conn = new mysqli("localhost", "root", "", "Tour_and_travel");
-                            $pkg_sql = "SELECT id, name FROM tour_packages ORDER BY name";
-                            $pkg_result = $pkg_conn->query($pkg_sql);
-                            while ($pkg = $pkg_result->fetch_assoc()) {
-                                $selected = ($pkg['id'] == $tour['package_id']) ? 'selected' : '';
-                                echo '<option value="' . $pkg['id'] . '" ' . $selected . '>' . htmlspecialchars($pkg['name']) . '</option>';
-                            }
-                            $pkg_conn->close();
-                            ?>
-                        </select>
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($tour['location']); ?>" required>
                     </div>
 
                     <div class="form-group">

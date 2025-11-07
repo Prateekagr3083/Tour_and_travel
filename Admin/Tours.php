@@ -19,9 +19,8 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all tours from database with destination and package names
 $tours = [];
-$sql = "SELECT t.id, t.title, d.name AS destination_name, t.price, t.duration, p.name AS package_name
+$sql = "SELECT t.id, t.title, t.location, t.price, t.duration, p.name AS package_name
         FROM tours t
-        LEFT JOIN destinations d ON t.destination_id = d.id
         LEFT JOIN tour_packages p ON t.package_id = p.id
         ORDER BY t.id DESC";
 $result = $conn->query($sql);
@@ -104,10 +103,10 @@ $conn->close();
                             <tr>
                                 <th>ID</th>
                                 <th>Tour Name</th>
-                                <th>Destination</th>
+                                <th>Location</th>
                                 <th>Price</th>
                                 <th>Duration</th>
-                                <th>Status</th>
+                                <th>Package</th>
                                 <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
@@ -117,7 +116,7 @@ $conn->close();
                                 <tr>
                                     <td><?php echo htmlspecialchars($tour['id']); ?></td>
                                     <td><?php echo htmlspecialchars($tour['title']); ?></td>
-                                    <td><?php echo htmlspecialchars($tour['destination_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($tour['location']); ?></td>
                                     <td>₹<?php echo number_format($tour['price'], 2); ?></td>
                                     <td><?php echo htmlspecialchars($tour['duration']); ?> days</td>
                                     <td>

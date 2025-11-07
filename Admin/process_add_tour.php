@@ -11,28 +11,28 @@ include '../Database/db_connect.php';
 // Validate and sanitize inputs
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+$location = isset($_POST['location']) ? trim($_POST['location']) : '';
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
 $duration = isset($_POST['duration']) ? intval($_POST['duration']) : 0;
-$destination_id = isset($_POST['destination_id']) ? intval($_POST['destination_id']) : 0;
 $package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
 
 // Basic validation
 $errors = [];
 
-if ($title === '') {
+if (empty($title)) {
     $errors[] = "Tour name is required.";
 }
-if ($description === '') {
+if (empty($description)) {
     $errors[] = "Description is required.";
+}
+if (empty($location)) {
+    $errors[] = "Location is required.";
 }
 if ($price <= 0) {
     $errors[] = "Price must be greater than zero.";
 }
-if ($duration <= 0) {
+if ($duration < 1) {
     $errors[] = "Duration must be at least 1 day.";
-}
-if ($destination_id <= 0) {
-    $errors[] = "Please select a valid destination.";
 }
 if ($package_id <= 0) {
     $errors[] = "Please select a valid package.";
@@ -48,8 +48,8 @@ if (!empty($errors)) {
 }
 
 // Insert tour into database
-$stmt = $conn->prepare("INSERT INTO tours (title, description, price, duration, destination_id, package_id) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssdiii", $title, $description, $price, $duration, $destination_id, $package_id);
+$stmt = $conn->prepare("INSERT INTO tours (title, description, location, price, duration, package_id) VALUES (?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sssdii", $title, $description, $location, $price, $duration, $package_id);
 
 if (!$stmt->execute()) {
     $_SESSION['add_tour_errors'] = ["Database error: " . $stmt->error];

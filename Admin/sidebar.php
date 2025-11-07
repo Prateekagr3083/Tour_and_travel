@@ -23,11 +23,7 @@
                 <i>🏨</i> Tours
             </a>
         </li>
-        <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'Destinations.php' ? 'active' : ''; ?>">
-            <a href="Destinations.php" class="nav-link">
-                <i>📍</i> Destinations
-            </a>
-        </li>
+
         <li class="nav-item <?php echo basename($_SERVER['PHP_SELF']) === 'Packages.php' ? 'active' : ''; ?>">
             <a href="Packages.php" class="nav-link">
                 <i>📦</i> Tour Packages

@@ -8,24 +8,26 @@ include 'session_config.php';
 include 'Database/db_connect.php';
 
 $tours = [];
-$sql = "SELECT t.id, t.title, d.name AS destination_name, t.price, t.duration, p.name AS package_name
+$sql = "SELECT t.id, t.title, t.location, t.price, t.duration, p.name AS package_name
         FROM tours t
-        LEFT JOIN destinations d ON t.destination_id = d.id
         LEFT JOIN tour_packages p ON t.package_id = p.id
         ORDER BY t.id DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Fetch first image for the tour from tour_images table
-        $image_sql = "SELECT image_url FROM tour_images WHERE tour_id = " . intval($row['id']) . " LIMIT 1";
+        // Fetch all images for the tour from tour_images table
+        $image_sql = "SELECT image_url FROM tour_images WHERE tour_id = " . intval($row['id']);
         $image_result = $conn->query($image_sql);
-        $image_url = 'project image/default-tour.jpg';
+        $tour_images = [];
         if ($image_result && $image_result->num_rows > 0) {
-            $image_row = $image_result->fetch_assoc();
-            $image_url = $image_row['image_url'];
+            while ($image_row = $image_result->fetch_assoc()) {
+                $tour_images[] = $image_row['image_url'];
+            }
+        } else {
+            $tour_images[] = 'project image/default-tour.jpg';
         }
-        $row['image_url'] = $image_url;
+        $row['tour_images'] = $tour_images;
         $tours[] = $row;
     }
 }
@@ -55,13 +57,17 @@ $conn->close();
                     <?php foreach ($tours as $tour): ?>
                         <div class="card" data-tour-id="<?php echo htmlspecialchars($tour['id']); ?>">
                             <div class="image_container">
-                                <img src="<?php echo htmlspecialchars($tour['image_url'] ?? 'project image/default-tour.jpg'); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="tour-image">
+                                <div class="image-slider">
+                                    <?php foreach ($tour['tour_images'] as $index => $img_url): ?>
+                                        <img src="<?php echo htmlspecialchars($img_url); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="tour-image <?php echo $index === 0 ? 'active' : ''; ?>">
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                             <div class="title">
                                 <span><?php echo htmlspecialchars($tour['title']); ?></span>
                             </div>
                             <div class="size">
-                                <span><?php echo htmlspecialchars($tour['destination_name']); ?></span>
+                                <span><?php echo htmlspecialchars($tour['location']); ?></span>
                             </div>
                             <div class="action">
                                 <div class="price">

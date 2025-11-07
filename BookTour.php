@@ -27,7 +27,7 @@
 
             <div class="tour-summary">
                 <h3>Tour Summary</h3>
-                <p><strong>Destination:</strong> <?php echo htmlspecialchars($tour['destination_name'] ?? $tour['location']); ?></p>
+                <p><strong>Location:</strong> <?php echo htmlspecialchars($tour['location']); ?></p>
                 <p><strong>Duration:</strong> <?php echo htmlspecialchars($tour['duration']); ?> days</p>
                 <p><strong>Price:</strong> ₹<?php echo number_format($tour['price'], 2); ?></p>
                 <p><strong>Package:</strong> <?php echo htmlspecialchars($tour['package_name'] ?? 'Standard'); ?></p>

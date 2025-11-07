@@ -20,7 +20,7 @@ $admin_email = $_SESSION['admin_email'];
 $reviews = [];
 $sql = "SELECT ui.id, ui.review_rating, ui.review_comment, ui.review_date, ui.status,
         u.first_name, u.last_name, u.email,
-        t.title as tour_name, d.name as destination_name
+        t.title as tour_name, t.location as destination_name
         FROM user_interactions ui
         JOIN users u ON ui.user_id = u.id
         JOIN tours t ON ui.tour_id = t.id

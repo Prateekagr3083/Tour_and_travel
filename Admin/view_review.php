@@ -23,7 +23,7 @@ include '../Database/db_connect.php';
 $sql = "SELECT ui.id, ui.review_rating, ui.review_comment, ui.review_date, ui.status,
         u.first_name, u.last_name, u.email,
         t.title as tour_name, t.description as tour_description,
-        d.name as destination_name, p.name as package_name
+        t.location as destination_name, p.name as package_name
         FROM user_interactions ui
         JOIN users u ON ui.user_id = u.id
         JOIN tours t ON ui.tour_id = t.id

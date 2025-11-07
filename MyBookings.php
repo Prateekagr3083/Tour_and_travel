@@ -18,7 +18,7 @@ $user_id = $_SESSION['user_id'];
 
 // Fetch user's bookings
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, t.title, t.price, d.name AS destination_name, t.duration
+$sql = "SELECT b.id, b.booking_date, b.status, t.title, t.price, t.location, t.duration
         FROM bookings b
         JOIN tours t ON b.tour_id = t.id
         LEFT JOIN destinations d ON t.destination_id = d.id
@@ -67,7 +67,7 @@ $conn->close();
                             <div class="booking-details">
                                 <div class="detail-item">
                                     <span class="detail-label">Destination</span>
-                                    <span class="detail-value"><?php echo htmlspecialchars($booking['destination_name'] ?? 'N/A'); ?></span>
+                                    <span class="detail-value"><?php echo htmlspecialchars($booking['location'] ?? 'N/A'); ?></span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Duration</span>

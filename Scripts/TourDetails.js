@@ -1,6 +1,66 @@
 // Tour Details Page JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Image Slider Functionality
+    const images = document.querySelectorAll('.gallery-image');
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    // Function to show slide
+    function showSlide(index) {
+        // Hide all images
+        images.forEach(img => img.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // Show current image
+        images[index].classList.add('active');
+        dots[index].classList.add('active');
+        currentIndex = index;
+    }
+
+    // Function to next slide
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % images.length;
+        showSlide(currentIndex);
+    }
+
+    // Function to previous slide
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showSlide(currentIndex);
+    }
+
+    // Auto slide functionality
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, 3000); // Change image every 3 seconds
+    }
+
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+
+    // Add click event to dots
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            stopAutoSlide();
+            startAutoSlide(); // Restart auto slide after manual interaction
+        });
+    });
+
+    // Pause auto slide on hover
+    const slider = document.querySelector('.image-slider');
+    if (slider) {
+        slider.addEventListener('mouseenter', stopAutoSlide);
+        slider.addEventListener('mouseleave', startAutoSlide);
+    }
+
+    // Start auto slide if there are multiple images
+    if (images.length > 1) {
+        startAutoSlide();
+    }
+
     // Optional: Add smooth scrolling to reviews section
     const reviewsSection = document.querySelector('.reviews-section');
     if (reviewsSection) {

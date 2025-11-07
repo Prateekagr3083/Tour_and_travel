@@ -10,21 +10,12 @@
             <label for="description">Description:</label>
             <textarea id="description" name="description" rows="3" required></textarea>
         </div>
+
         <div class="form-group">
-            <label for="destination">Destination:</label>
-            <select id="destination" name="destination_id" required>
-                <option value="">Select Destination</option>
-                <?php
-                include '../Database/db_connect.php';
-                $dest_sql = "SELECT id, name FROM destinations ORDER BY name";
-                $dest_result = $conn->query($dest_sql);
-                while ($dest = $dest_result->fetch_assoc()) {
-                    echo '<option value="' . $dest['id'] . '">' . htmlspecialchars($dest['name']) . '</option>';
-                }
-                $conn->close();
-                ?>
-            </select>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
         </div>
+
         <div class="form-group">
             <label for="package">Tour Package:</label>
             <select id="package" name="package_id" required>

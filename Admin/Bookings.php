@@ -20,7 +20,7 @@ $admin_email = $_SESSION['admin_email'];
 $bookings = [];
 $sql = "SELECT b.id, b.booking_date, b.status,
         u.first_name, u.last_name, u.email as user_email,
-        t.title as tour_name, d.name as destination_name, t.price as tour_price
+        t.title as tour_name, t.location as destination_name, t.price as tour_price
         FROM bookings b
         JOIN users u ON b.user_id = u.id
         JOIN tours t ON b.tour_id = t.id
