@@ -17,21 +17,6 @@
         </div>
 
         <div class="form-group">
-            <label for="package">Tour Package:</label>
-            <select id="package" name="package_id" required>
-                <option value="">Select Package</option>
-                <?php
-                include '../Database/db_connect.php';
-                $pkg_sql = "SELECT id, name FROM tour_packages ORDER BY name";
-                $pkg_result = $conn->query($pkg_sql);
-                while ($pkg = $pkg_result->fetch_assoc()) {
-                    echo '<option value="' . $pkg['id'] . '">' . htmlspecialchars($pkg['name']) . '</option>';
-                }
-                $conn->close();
-                ?>
-            </select>
-        </div>
-        <div class="form-group">
             <label for="price">Price (₹):</label>
             <input type="number" id="price" name="price" step="0.01" min="0" required>
         </div>

@@ -55,7 +55,7 @@
                             <i class="icon">📋</i> My Bookings
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="?logout=1" class="dropdown-item logout">
+                        <a href="logout.php" class="dropdown-item logout">
                             <i class="icon">🚪</i> Logout
                         </a>
                     </div>

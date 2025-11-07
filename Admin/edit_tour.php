@@ -44,14 +44,6 @@ while ($row = $result_images->fetch_assoc()) {
     $tour_images[] = $row;
 }
 
-// Fetch packages for dropdown
-$packages = [];
-$pkg_sql = "SELECT id, name FROM tour_packages ORDER BY name";
-$pkg_result = $conn->query($pkg_sql);
-while ($pkg = $pkg_result->fetch_assoc()) {
-    $packages[] = $pkg;
-}
-
 $conn->close();
 ?>
 <!DOCTYPE html>

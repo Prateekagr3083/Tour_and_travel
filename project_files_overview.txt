@@ -3,6 +3,14 @@ Root PHP files:
 - Login.php: Login page
 - Register.php: Registration page
 - test_session.php: Session test script
+- Tours.php: Tours listing page
+- TourDetails.php: Individual tour details page
+- BookTour.php: Tour booking page
+- MyBookings.php: User bookings page
+- UserProfile.php: User profile page
+- Terms.php: Terms and conditions page
+- process_review.php: Review submission processing
+- process_profile_update.php: Profile update processing
 
 Admin directory:
 - Admin/Bookings.php: Bookings management
@@ -15,6 +23,26 @@ Admin directory:
 - Admin/sidebar.php: Admin sidebar layout
 - Admin/Tours.php: Tours management
 - Admin/Users.php: Users management
+- Admin/Destinations.php: Destinations management
+- Admin/Packages.php: Tour packages management
+- Admin/TourSchedules.php: Tour schedules management
+- Admin/edit_tour.php: Edit tour page
+- Admin/edit_user.php: Edit user page
+- Admin/view_booking.php: View booking details
+- Admin/view_payment.php: View payment details
+- Admin/view_review.php: View review details
+- Admin/process_add_tour.php: Add tour processing
+- Admin/process_edit_tour.php: Edit tour processing
+- Admin/process_delete_tour.php: Delete tour processing
+- Admin/process_add_user.php: Add user processing
+- Admin/process_edit_user.php: Edit user processing
+- Admin/process_delete_user.php: Delete user processing
+- Admin/process_add_destination.php: Add destination processing
+- Admin/process_add_package.php: Add package processing
+- Admin/process_add_schedule.php: Add schedule processing
+- Admin/process_booking_status.php: Update booking status
+- Admin/process_review_approval.php: Review approval processing
+- Admin/process_delete_image.php: Delete tour image processing
 
 Admin CSS:
 - Admin/css/Admin.css: Admin styles
@@ -33,12 +61,19 @@ Admin JS:
 - Admin/js/sidebar.js: Sidebar scripts
 - Admin/js/tours.js: Tours scripts
 - Admin/js/users.js: Users scripts
+- Admin/js/add_tour.js: Add tour scripts
 
 CSS directory:
-- CSS/Global.css: Global styles
 - CSS/Home.css: Home page styles
 - CSS/Login.css: Login page styles
 - CSS/Nave.css: Navigation styles
+- CSS/Tours.css: Tours page styles
+- CSS/TourDetails.css: Tour details page styles
+- CSS/BookTour.css: Book tour page styles
+- CSS/MyBookings.css: My bookings page styles
+- CSS/UserProfile.css: User profile page styles
+- CSS/Terms.css: Terms page styles
+- CSS/ReviewForm.css: Review form styles
 
 Database directory:
 - Database/db_connect.php: Database connection
@@ -52,6 +87,11 @@ Navbar directory:
 Scripts directory:
 - Scripts/login.js: Login scripts
 - Scripts/session-handler.js: Session handling scripts
+- Scripts/Tours.js: Tours page scripts
+- Scripts/TourDetails.js: Tour details page scripts
+- Scripts/BookTour.js: Book tour page scripts
+- Scripts/MyBookings.js: My bookings page scripts
+- Scripts/UserProfile.js: User profile page scripts
 
 Icons directory:
 - Icons/user.png: User icon
@@ -60,9 +100,18 @@ Icons directory:
 Project image directory:
 - project image/: Various images used in the project
 
+Additional files:
+- TODO.md: Project task list
+- check_db.php: Database check script
+- insert_packages.php: Package insertion script
+- session_config.php: Session configuration
+- temp_check.php: Temporary check script
+- test_data.php: Test data script
+- update_tour.php: Tour update script
+
 Workflow:
-Tour and Travel website with user login, registration, admin panel for managing tours, bookings, users, payments, and reviews. Frontend styled with CSS and interactive with JS.
-stable comit id-- 348a0a2eaf7b5a52c089c6dbe713c7fdaf5c5ed4
+Tour and Travel website with user login, registration, admin panel for managing tours, bookings, users, payments, and reviews. Frontend styled with CSS and interactive with JS. Features include tour browsing, booking, reviews, user profiles, and comprehensive admin management.
+stable commit id-- 348a0a2eaf7b5a52c089c6dbe713c7fdaf5c5ed4
 Sep 3, 2025, 7:43 PM   git config --global credential.helper manager
 git credential-manager erase
-check foe auto update view it as change
+check for auto update view it as change

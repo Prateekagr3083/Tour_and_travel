@@ -1,4 +1,3 @@
-
 <?php
 // Admin Tours Page - Access restricted to admin users only
 session_start();
@@ -17,11 +16,10 @@ $admin_id = $_SESSION['admin_id'];
 $admin_name = $_SESSION['admin_name'];
 $admin_email = $_SESSION['admin_email'];
 
-// Get all tours from database with destination and package names
+// Get all tours from database
 $tours = [];
-$sql = "SELECT t.id, t.title, t.location, t.price, t.duration, p.name AS package_name
+$sql = "SELECT t.id, t.title, t.location, t.price, t.duration
         FROM tours t
-        LEFT JOIN tour_packages p ON t.package_id = p.id
         ORDER BY t.id DESC";
 $result = $conn->query($sql);
 
@@ -106,8 +104,6 @@ $conn->close();
                                 <th>Location</th>
                                 <th>Price</th>
                                 <th>Duration</th>
-                                <th>Package</th>
-                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -119,14 +115,6 @@ $conn->close();
                                     <td><?php echo htmlspecialchars($tour['location']); ?></td>
                                     <td>₹<?php echo number_format($tour['price'], 2); ?></td>
                                     <td><?php echo htmlspecialchars($tour['duration']); ?> days</td>
-                                    <td>
-                                        <span>
-                                            <?php echo htmlspecialchars($tour['package_name']); ?>
-                                        </span>
-                                    </td>
-                                    <td> <!-- No created_at column in tours table -->
-                                        N/A
-                                    </td>
                                     <td>
                                         <a href="edit_tour.php?id=<?php echo $tour['id']; ?>" class="action-btn edit-btn">Edit</a>
                                         <a href="#" class="action-btn delete-btn" onclick="deleteTour(<?php echo $tour['id']; ?>)">Delete</a>

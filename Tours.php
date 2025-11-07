@@ -8,9 +8,8 @@ include 'session_config.php';
 include 'Database/db_connect.php';
 
 $tours = [];
-$sql = "SELECT t.id, t.title, t.location, t.price, t.duration, p.name AS package_name
+$sql = "SELECT t.id, t.title, t.location, t.price, t.duration
         FROM tours t
-        LEFT JOIN tour_packages p ON t.package_id = p.id
         ORDER BY t.id DESC";
 $result = $conn->query($sql);
 

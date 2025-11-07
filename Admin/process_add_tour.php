@@ -14,7 +14,6 @@ $description = isset($_POST['description']) ? trim($_POST['description']) : '';
 $location = isset($_POST['location']) ? trim($_POST['location']) : '';
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
 $duration = isset($_POST['duration']) ? intval($_POST['duration']) : 0;
-$package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
 
 // Basic validation
 $errors = [];
@@ -34,9 +33,6 @@ if ($price <= 0) {
 if ($duration < 1) {
     $errors[] = "Duration must be at least 1 day.";
 }
-if ($package_id <= 0) {
-    $errors[] = "Please select a valid package.";
-}
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     $errors[] = "Image upload failed or missing.";
 }
@@ -48,8 +44,8 @@ if (!empty($errors)) {
 }
 
 // Insert tour into database
-$stmt = $conn->prepare("INSERT INTO tours (title, description, location, price, duration, package_id) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssdii", $title, $description, $location, $price, $duration, $package_id);
+$stmt = $conn->prepare("INSERT INTO tours (title, description, location, price, duration) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sssdsi", $title, $description, $location, $price, $duration);
 
 if (!$stmt->execute()) {
     $_SESSION['add_tour_errors'] = ["Database error: " . $stmt->error];
