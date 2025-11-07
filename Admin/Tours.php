@@ -1,4 +1,39 @@
 
+<?php
+// Admin Tours Page - Access restricted to admin users only
+session_start();
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_id']) || $_SESSION['admin_role'] !== 'admin') {
+    header("Location: Login.php");
+    exit();
+}
+
+// Include database connection
+include '../Database/db_connect.php';
+
+// Get admin information
+$admin_id = $_SESSION['admin_id'];
+$admin_name = $_SESSION['admin_name'];
+$admin_email = $_SESSION['admin_email'];
+
+// Get all tours from database with destination and package names
+$tours = [];
+$sql = "SELECT t.id, t.title, d.name AS destination_name, t.price, t.duration, p.name AS package_name
+        FROM tours t
+        LEFT JOIN destinations d ON t.destination_id = d.id
+        LEFT JOIN tour_packages p ON t.package_id = p.id
+        ORDER BY t.id DESC";
+$result = $conn->query($sql);
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $tours[] = $row;
+    }
+}
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +71,18 @@
                     if (isset($_SESSION['add_tour_success'])) {
                         echo '<div class="success-message" style="color: green; margin-top: 10px;">' . htmlspecialchars($_SESSION['add_tour_success']) . '</div>';
                         unset($_SESSION['add_tour_success']);
+                    }
+                    if (isset($_SESSION['edit_tour_errors'])) {
+                        echo '<div class="error-message">';
+                        foreach ($_SESSION['edit_tour_errors'] as $error) {
+                            echo '<p>' . htmlspecialchars($error) . '</p>';
+                        }
+                        echo '</div>';
+                        unset($_SESSION['edit_tour_errors']);
+                    }
+                    if (isset($_SESSION['edit_tour_success'])) {
+                        echo '<div class="success-message" style="color: green; margin-top: 10px;">' . htmlspecialchars($_SESSION['edit_tour_success']) . '</div>';
+                        unset($_SESSION['edit_tour_success']);
                     }
                     ?>
                 </div>

@@ -46,6 +46,7 @@
 - [x] Update session settings in php.ini
 
 ## Phase 8: Testing and Polish
+- [x] Add session management and admin authentication to Admin/Tours.php
 - [ ] Test complete user flow: register -> login -> view tours -> book tour -> add review
 - [ ] Test complete admin flow: login -> add tour -> manage bookings -> view reviews
 - [ ] Ensure all buttons and links work

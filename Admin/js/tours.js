@@ -65,9 +65,8 @@
     // Edit tour function
     function editTour(tourId) {
         console.log('Editing tour:', tourId);
-        // Implement tour editing logic here
-        // This would typically open a modal or redirect to an edit page
-        alert('Edit tour functionality for ID: ' + tourId);
+        // Redirect to edit tour page
+        window.location.href = 'edit_tour.php?id=' + tourId;
     }
 
     // Delete tour function

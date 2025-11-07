@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="terms-conditions">
                 <label>
-                    <input type="checkbox" name="terms" required=""> I accept the <a href="#">Terms & Conditions</a>
+                    <input type="checkbox" name="terms" required=""> I accept the <a href="Terms.php" target="_blank">Terms & Conditions</a>
                 </label>
             </div>
             <button type="submit" class="submit">Register</button>

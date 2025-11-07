@@ -10,9 +10,7 @@
             <li class="nav-item">
                 <a href="Tours.php" class="nav-link">Tours</a>
             </li>
-            <li class="nav-item">
-                <a href="Terms.php" class="nav-link">Terms & Conditions</a>
-            </li>
+
             <?php
             // Start session if not already started
             if (session_status() === PHP_SESSION_NONE) {

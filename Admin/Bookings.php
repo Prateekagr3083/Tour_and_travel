@@ -18,9 +18,9 @@ $admin_email = $_SESSION['admin_email'];
 
 // Get all bookings from database with user and tour information
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, b.number_of_guests, b.total_price,
+$sql = "SELECT b.id, b.booking_date, b.status,
         u.first_name, u.last_name, u.email as user_email,
-        t.title as tour_name, d.name as destination_name
+        t.title as tour_name, d.name as destination_name, t.price as tour_price
         FROM bookings b
         JOIN users u ON b.user_id = u.id
         JOIN tours t ON b.tour_id = t.id
@@ -125,8 +125,8 @@ $conn->close();
                                     </td>
                                     <td><?php echo htmlspecialchars($booking['tour_name']); ?></td>
                                     <td><?php echo htmlspecialchars($booking['destination_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($booking['number_of_guests']); ?></td>
-                                    <td>₹<?php echo number_format($booking['total_price'], 2); ?></td>
+                                    <td>1</td>
+                                    <td>₹<?php echo number_format($booking['tour_price'], 2); ?></td>
                                     <td><?php echo date('M j, Y', strtotime($booking['booking_date'])); ?></td>
                                     <td>
                                         <span class="status-<?php echo $booking['status']; ?>">

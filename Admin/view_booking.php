@@ -20,7 +20,7 @@ if ($booking_id <= 0) {
 include '../Database/db_connect.php';
 
 // Get booking details with user and tour information
-$sql = "SELECT b.id, b.booking_date, b.status, b.number_of_guests, b.total_price,
+$sql = "SELECT b.id, b.booking_date, b.status,
         u.first_name, u.last_name, u.email, u.contact_number,
         t.title as tour_name, t.price as tour_price, t.duration, t.description,
         d.name as destination_name, p.name as package_name

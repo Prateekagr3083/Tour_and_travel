@@ -1,7 +1,4 @@
-// Include session configuration
-include 'session_config.php';
 
-session_start();
 
 <!DOCTYPE html>
 <html lang="en">

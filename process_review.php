@@ -1,3 +1,4 @@
+<?php
 // Include session configuration
 include 'session_config.php';
 

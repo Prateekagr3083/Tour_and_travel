@@ -26,9 +26,9 @@ $failed_payments = 0;
 // Assuming bookings table has: id, user_id, tour_id, booking_date, status, number_of_guests, total_price
 // We'll treat bookings with status 'confirmed' as completed payments, others as pending or failed
 
-$sql = "SELECT b.id, b.user_id, b.tour_id, b.booking_date, b.status, b.number_of_guests, b.total_price,
+$sql = "SELECT b.id, b.user_id, b.tour_id, b.booking_date, b.status,
         u.first_name, u.last_name, u.email,
-        t.title as tour_name
+        t.title as tour_name, t.price as tour_price
         FROM bookings b
         LEFT JOIN users u ON b.user_id = u.id
         LEFT JOIN tours t ON b.tour_id = t.id
@@ -39,7 +39,7 @@ $result = $conn->query($sql);
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $payment_status = 'pending';
-        $amount = $row['total_price'];
+        $amount = $row['tour_price']; // Use tour price as amount since total_price doesn't exist
 
         if ($row['status'] === 'confirmed') {
             $payment_status = 'completed';
@@ -63,7 +63,7 @@ if ($result && $result->num_rows > 0) {
             'transaction_id' => 'TXN' . str_pad($row['id'], 6, '0', STR_PAD_LEFT),
             'created_at' => $row['booking_date'],
             'tour_name' => $row['tour_name'],
-            'guests' => $row['number_of_guests']
+            'guests' => 1 // Default to 1 guest since number_of_guests doesn't exist
         ];
 
         $total_payments += $amount;

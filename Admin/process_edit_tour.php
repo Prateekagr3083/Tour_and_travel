@@ -12,7 +12,8 @@ include '../Database/db_connect.php';
 $tour_id = isset($_POST['tour_id']) ? intval($_POST['tour_id']) : 0;
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 $description = isset($_POST['description']) ? trim($_POST['description']) : '';
-$location = isset($_POST['location']) ? trim($_POST['location']) : '';
+$destination_id = isset($_POST['destination_id']) ? intval($_POST['destination_id']) : 0;
+$package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : 0;
 $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
 $duration = isset($_POST['duration']) ? intval($_POST['duration']) : 0;
 
@@ -28,8 +29,11 @@ if ($title === '') {
 if ($description === '') {
     $errors[] = "Description is required.";
 }
-if ($location === '') {
-    $errors[] = "Location is required.";
+if ($destination_id <= 0) {
+    $errors[] = "Please select a valid destination.";
+}
+if ($package_id <= 0) {
+    $errors[] = "Please select a valid package.";
 }
 if ($price <= 0) {
     $errors[] = "Price must be greater than zero.";
@@ -45,8 +49,8 @@ if (!empty($errors)) {
 }
 
 // Update tour in database
-$stmt = $conn->prepare("UPDATE tours SET title = ?, description = ?, price = ?, location = ?, duration = ? WHERE id = ?");
-$stmt->bind_param("ssdssi", $title, $description, $price, $location, $duration, $tour_id);
+$stmt = $conn->prepare("UPDATE tours SET title = ?, description = ?, destination_id = ?, package_id = ?, price = ?, duration = ? WHERE id = ?");
+$stmt->bind_param("ssiidii", $title, $description, $destination_id, $package_id, $price, $duration, $tour_id);
 
 if (!$stmt->execute()) {
     $_SESSION['edit_tour_errors'] = ["Database error: " . $stmt->error];
