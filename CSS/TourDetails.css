@@ -298,6 +298,99 @@ body {
     border: 1px solid #f5c6cb;
 }
 
+/* Booking Section Styles */
+.booking-section {
+    margin-top: 3rem;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form h2 {
+    color: #012d20;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.booking-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.booking-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #04543a;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.booking-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.person-fields {
+    margin-top: 2rem;
+}
+
+.person-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #04543a;
+}
+
+.person-card h4 {
+    color: #04543a;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.booking-summary {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.booking-summary h3 {
+    color: #012d20;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.summary-item.total-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #28a745;
+    border-bottom: none;
+    border-top: 2px solid #28a745;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .tour-details {
@@ -332,6 +425,18 @@ body {
     .review-form-section {
         padding: 1.5rem;
     }
+
+    .booking-section {
+        padding: 1rem;
+    }
+
+    .person-card {
+        padding: 1rem;
+    }
+
+    .booking-summary {
+        padding: 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -348,6 +453,18 @@ body {
     }
 
     .review-form-section {
+        padding: 1rem;
+    }
+
+    .booking-section {
+        padding: 1rem;
+    }
+
+    .person-card {
+        padding: 1rem;
+    }
+
+    .booking-summary {
         padding: 1rem;
     }
 }

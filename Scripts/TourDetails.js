@@ -61,6 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
         startAutoSlide();
     }
 
+    // Initialize dynamic form fields if booking section exists
+    if (document.getElementById('booking-section')) {
+        initDynamicFields();
+    }
+
     // Optional: Add smooth scrolling to reviews section
     const reviewsSection = document.querySelector('.reviews-section');
     if (reviewsSection) {
@@ -93,7 +98,87 @@ document.addEventListener('DOMContentLoaded', function() {
     // Back to tours button functionality removed - using HTML button instead
 });
 
-// Add styles for the back button
+// Toggle booking form visibility
+function toggleBookingForm() {
+    const bookingSection = document.getElementById('booking-section');
+    if (bookingSection.style.display === 'none' || bookingSection.style.display === '') {
+        bookingSection.style.display = 'block';
+        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        bookingSection.style.display = 'none';
+    }
+}
+
+// Initialize dynamic form fields based on number of people
+function initDynamicFields() {
+    const numPeopleSelect = document.getElementById('num_people');
+    const personFieldsContainer = document.getElementById('person-fields');
+
+    if (!numPeopleSelect || !personFieldsContainer) return;
+
+    numPeopleSelect.addEventListener('change', function() {
+        const numPeople = parseInt(this.value);
+        generatePersonFields(numPeople);
+        updateTotalPrice();
+    });
+}
+
+// Generate dynamic fields for each person
+function generatePersonFields(numPeople) {
+    const container = document.getElementById('person-fields');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear existing fields
+
+    for (let i = 1; i <= numPeople; i++) {
+        const personCard = document.createElement('div');
+        personCard.className = 'person-card';
+        personCard.innerHTML = `
+            <h4>Person ${i}</h4>
+            <div class="form-group">
+                <label for="name_${i}">Full Name:</label>
+                <input type="text" id="name_${i}" name="name_${i}" required placeholder="Enter full name">
+            </div>
+            <div class="form-group">
+                <label for="age_${i}">Age:</label>
+                <input type="number" id="age_${i}" name="age_${i}" required min="1" max="120" placeholder="Enter age">
+            </div>
+            <div class="form-group">
+                <label for="gender_${i}">Gender:</label>
+                <select id="gender_${i}" name="gender_${i}" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="health_${i}">Health Conditions (Optional):</label>
+                <textarea id="health_${i}" name="health_${i}" rows="2" placeholder="Any medical conditions or special requirements..."></textarea>
+            </div>
+        `;
+        container.appendChild(personCard);
+    }
+}
+
+// Update total price based on number of people
+function updateTotalPrice() {
+    const numPeopleSelect = document.getElementById('num_people');
+    const totalPriceElement = document.getElementById('total-price');
+
+    if (!numPeopleSelect || !totalPriceElement) return;
+
+    const numPeople = parseInt(numPeopleSelect.value) || 0;
+
+    // Get price from the summary (assuming it's in the format "₹X.XX")
+    const priceText = document.querySelector('.summary-item span:last-child').textContent;
+    const pricePerPerson = parseFloat(priceText.replace('₹', '').replace(',', '')) || 0;
+
+    const totalPrice = numPeople * pricePerPerson;
+    totalPriceElement.textContent = '₹' + totalPrice.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Add styles for the back button and booking form
 const style = document.createElement('style');
 style.textContent = `
     .back-button {
@@ -109,6 +194,36 @@ style.textContent = `
     }
     .back-button:hover {
         background-color: #094b35;
+    }
+
+    .person-card {
+        animation: slideInUp 0.3s ease-out;
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .booking-section {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 `;
 document.head.appendChild(style);

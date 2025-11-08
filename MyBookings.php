@@ -1,3 +1,4 @@
+<?php
 // Include session configuration
 include 'session_config.php';
 
@@ -16,20 +17,34 @@ include 'Database/db_connect.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch user's bookings
+// Fetch user's bookings with participant details
 $bookings = [];
-$sql = "SELECT b.id, b.booking_date, b.status, t.title, t.price, t.location, t.duration
+$sql = "SELECT b.id, b.booking_date, b.status, b.total_price, b.num_people, t.title, t.price as tour_price, t.location, t.duration
         FROM bookings b
         JOIN tours t ON b.tour_id = t.id
-        LEFT JOIN destinations d ON t.destination_id = d.id
         WHERE b.user_id = ?
         ORDER BY b.booking_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
+
 while ($row = $result->fetch_assoc()) {
+    // Fetch participant details for this booking
+    $participants_sql = "SELECT person_name, age, gender, health_conditions FROM booking_details WHERE booking_id = ?";
+    $stmt_participants = $conn->prepare($participants_sql);
+    $stmt_participants->bind_param("i", $row['id']);
+    $stmt_participants->execute();
+    $participants_result = $stmt_participants->get_result();
+
+    $participants = [];
+    while ($participant = $participants_result->fetch_assoc()) {
+        $participants[] = $participant;
+    }
+
+    $row['participants'] = $participants;
     $bookings[] = $row;
+    $stmt_participants->close();
 }
 
 $conn->close();
@@ -53,6 +68,14 @@ $conn->close();
         <section class="bookings-section">
             <h1>My Bookings</h1>
 
+            <?php if (isset($_SESSION['booking_success'])): ?>
+                <div class="message success"><?php echo $_SESSION['booking_success']; unset($_SESSION['booking_success']); ?></div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['booking_error'])): ?>
+                <div class="message error"><?php echo $_SESSION['booking_error']; unset($_SESSION['booking_error']); ?></div>
+            <?php endif; ?>
+
             <?php if (!empty($bookings)): ?>
                 <div class="bookings-grid">
                     <?php foreach ($bookings as $booking): ?>
@@ -74,14 +97,36 @@ $conn->close();
                                     <span class="detail-value"><?php echo htmlspecialchars($booking['duration']); ?> days</span>
                                 </div>
                                 <div class="detail-item">
-                                    <span class="detail-label">Price</span>
-                                    <span class="detail-value">₹<?php echo number_format($booking['price'], 2); ?></span>
+                                    <span class="detail-label">Number of People</span>
+                                    <span class="detail-value"><?php echo htmlspecialchars($booking['num_people']); ?></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Total Price</span>
+                                    <span class="detail-value">₹<?php echo number_format($booking['total_price'], 2); ?></span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Booking Date</span>
                                     <span class="detail-value"><?php echo date('M j, Y', strtotime($booking['booking_date'])); ?></span>
                                 </div>
                             </div>
+
+                            <?php if (!empty($booking['participants'])): ?>
+                                <div class="participants-section">
+                                    <h4>Participants:</h4>
+                                    <ul class="participants-list">
+                                        <?php foreach ($booking['participants'] as $participant): ?>
+                                            <li class="participant-item">
+                                                <strong><?php echo htmlspecialchars($participant['person_name']); ?></strong>
+                                                (<?php echo htmlspecialchars($participant['age']); ?> years old,
+                                                <?php echo htmlspecialchars(ucfirst($participant['gender'])); ?>)
+                                                <?php if (!empty($participant['health_conditions'])): ?>
+                                                    <br><small><em>Health: <?php echo htmlspecialchars($participant['health_conditions']); ?></em></small>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
 
                             <div class="booking-date">
                                 Booked on: <?php echo date('F j, Y \a\t g:i A', strtotime($booking['booking_date'])); ?>

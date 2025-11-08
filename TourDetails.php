@@ -119,7 +119,7 @@ $conn->close();
 
                         <?php if (isset($_SESSION['user_id'])): ?>
                             <div class="tour-actions">
-                                <a href="BookTour.php?id=<?php echo $tour_id; ?>" class="book-btn">Book This Tour</a>
+                                <button type="button" class="book-btn" onclick="toggleBookingForm()">Book This Tour</button>
                             </div>
                         <?php else: ?>
                             <div class="tour-actions">
@@ -129,6 +129,65 @@ $conn->close();
                     </div>
                 </div>
             </div>
+
+            <!-- Booking Form Section (Hidden by default) -->
+            <?php if (isset($_SESSION['user_id'])): ?>
+            <div id="booking-section" class="booking-section" style="display: none;">
+                <div class="booking-form">
+                    <h2>Book This Tour</h2>
+
+                    <?php if (isset($_SESSION['booking_success'])): ?>
+                        <div class="message success"><?php echo $_SESSION['booking_success']; unset($_SESSION['booking_success']); ?></div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_SESSION['booking_error'])): ?>
+                        <div class="message error"><?php echo $_SESSION['booking_error']; unset($_SESSION['booking_error']); ?></div>
+                    <?php endif; ?>
+
+                    <form method="POST" action="process_booking.php" id="booking-form">
+                        <input type="hidden" name="tour_id" value="<?php echo $tour_id; ?>">
+
+                        <!-- Number of People -->
+                        <div class="form-group">
+                            <label for="num_people">Number of People:</label>
+                            <select name="num_people" id="num_people" required>
+                                <option value="">Select number of people</option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5">5 People</option>
+                                <option value="6">6 People</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Person Fields Container -->
+                        <div id="person-fields" class="person-fields">
+                            <!-- Fields will be dynamically added here -->
+                        </div>
+
+                        <!-- Booking Summary -->
+                        <div class="booking-summary">
+                            <h3>Booking Summary</h3>
+                            <div class="summary-item">
+                                <span>Tour:</span>
+                                <span><?php echo htmlspecialchars($tour['title']); ?></span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Price per person:</span>
+                                <span>₹<?php echo number_format($tour['price'], 2); ?></span>
+                            </div>
+                            <div class="summary-item total-price">
+                                <span>Total Price:</span>
+                                <span id="total-price">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="book-btn">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <div class="reviews-section">
                 <h2>Customer Reviews</h2>
