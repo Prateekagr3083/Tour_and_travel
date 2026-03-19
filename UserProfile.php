@@ -1,9 +1,10 @@
+<?php
 // Include session configuration
 include 'session_config.php';
 
 session_start();
 
-// User Profile Page
+// My Profile Page
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -14,16 +15,22 @@ if (!isset($_SESSION['user_id'])) {
 // Include database connection
 include 'Database/db_connect.php';
 
-$user_id = $_SESSION['user_id'];
-
 // Fetch user data
-$sql = "SELECT first_name, last_name, contact_number, email, gender, created_at FROM users WHERE id = ?";
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT id, first_name, last_name, email, contact_number, gender, created_at FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$user = $result->fetch_assoc();
 
+if ($result->num_rows === 0) {
+    // User not found, redirect to login
+    header("Location: Login.php");
+    exit();
+}
+
+$user = $result->fetch_assoc();
+$stmt->close();
 $conn->close();
 ?>
 <!DOCTYPE html>

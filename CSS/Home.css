@@ -6,7 +6,8 @@
 
 body, html {
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     font-family: Arial, sans-serif;
 }
 

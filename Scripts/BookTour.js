@@ -91,14 +91,20 @@ function initImageSlider() {
 
 // Initialize dynamic form fields based on number of people
 function initDynamicFields() {
-    const numPeopleSelect = document.getElementById('num_people');
+    const numPeopleInput = document.getElementById('num_people');
     const personFieldsContainer = document.getElementById('person-fields');
 
-    if (!numPeopleSelect || !personFieldsContainer) return;
+    if (!numPeopleInput || !personFieldsContainer) return;
 
-    numPeopleSelect.addEventListener('change', function() {
+    numPeopleInput.addEventListener('input', function() {
         const numPeople = parseInt(this.value);
-        generatePersonFields(numPeople);
+        if (numPeople > 0) {
+            generatePersonFields(numPeople);
+        } else {
+            // Clear fields if invalid input
+            personFieldsContainer.innerHTML = '';
+            document.getElementById('total-price').textContent = '₹0.00';
+        }
         updateTotalPrice();
     });
 }
@@ -143,15 +149,18 @@ function generatePersonFields(numPeople) {
 
 // Update total price based on number of people
 function updateTotalPrice() {
-    const numPeopleSelect = document.getElementById('num_people');
+    const numPeopleInput = document.getElementById('num_people');
     const totalPriceElement = document.getElementById('total-price');
 
-    if (!numPeopleSelect || !totalPriceElement) return;
+    if (!numPeopleInput || !totalPriceElement) return;
 
-    const numPeople = parseInt(numPeopleSelect.value) || 0;
+    const numPeople = parseInt(numPeopleInput.value) || 0;
 
-    // Get price from the summary (assuming it's in the format "₹X.XX")
-    const priceText = document.querySelector('.summary-item span:last-child').textContent;
+    // Get price from the price-per-person element
+    const pricePerPersonElement = document.getElementById('price-per-person');
+    if (!pricePerPersonElement) return;
+
+    const priceText = pricePerPersonElement.textContent;
     const pricePerPerson = parseFloat(priceText.replace('₹', '').replace(',', '')) || 0;
 
     const totalPrice = numPeople * pricePerPerson;
@@ -161,8 +170,8 @@ function updateTotalPrice() {
 // Form validation
 function validateForm() {
     const numPeople = document.getElementById('num_people').value;
-    if (!numPeople || numPeople === '') {
-        alert('Please select the number of people.');
+    if (!numPeople || numPeople === '' || parseInt(numPeople) < 1) {
+        alert('Please enter a valid number of people (minimum 1).');
         return false;
     }
 

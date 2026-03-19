@@ -66,30 +66,11 @@ $conn->close();
     <?php include 'Navbar/Nave.php'; ?>
 
     <main>
-        <!-- Tour Details Section -->
+        <!-- Tour Details Section (Text Only) -->
         <section class="tour-details-section">
             <div class="tour-header">
                 <h1><?php echo htmlspecialchars($tour['title']); ?></h1>
-                <div class="tour-content">
-                    <div class="tour-gallery">
-                        <div class="image-slider">
-                            <?php if (!empty($tour_images)): ?>
-                                <?php foreach ($tour_images as $index => $img): ?>
-                                    <img src="<?php echo htmlspecialchars($img['image_url']); ?>" alt="<?php echo htmlspecialchars($img['description'] ?? $tour['title']); ?>" class="gallery-image <?php echo $index === 0 ? 'active' : ''; ?>">
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <img src="project image/default-tour.jpg" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="gallery-image active">
-                            <?php endif; ?>
-                        </div>
-                        <?php if (count($tour_images) > 1): ?>
-                            <div class="slider-dots">
-                                <?php for ($i = 0; $i < count($tour_images); $i++): ?>
-                                    <span class="dot <?php echo $i === 0 ? 'active' : ''; ?>" data-slide="<?php echo $i; ?>"></span>
-                                <?php endfor; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
+                <div class="tour-info-only">
                     <div class="tour-info">
                         <div class="info-item">
                             <strong>Price:</strong> ₹<?php echo number_format($tour['price'], 2); ?> per person
@@ -128,15 +109,7 @@ $conn->close();
                     <!-- Number of People -->
                     <div class="form-group">
                         <label for="num_people">Number of People:</label>
-                        <select name="num_people" id="num_people" required>
-                            <option value="">Select number of people</option>
-                            <option value="1">1 Person</option>
-                            <option value="2">2 People</option>
-                            <option value="3">3 People</option>
-                            <option value="4">4 People</option>
-                            <option value="5">5 People</option>
-                            <option value="6">6 People</option>
-                        </select>
+                        <input type="number" name="num_people" id="num_people" required min="1" max="20" placeholder="Enter number of people">
                     </div>
 
                     <!-- Dynamic Person Fields Container -->
@@ -153,7 +126,7 @@ $conn->close();
                         </div>
                         <div class="summary-item">
                             <span>Price per person:</span>
-                            <span>₹<?php echo number_format($tour['price'], 2); ?></span>
+                            <span id="price-per-person">₹<?php echo number_format($tour['price'], 2); ?></span>
                         </div>
                         <div class="summary-item total-price">
                             <span>Total Price:</span>

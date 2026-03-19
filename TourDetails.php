@@ -119,7 +119,7 @@ $conn->close();
 
                         <?php if (isset($_SESSION['user_id'])): ?>
                             <div class="tour-actions">
-                                <button type="button" class="book-btn" onclick="toggleBookingForm()">Book This Tour</button>
+                                <a href="BookTour.php?id=<?php echo $tour_id; ?>" target="_blank" class="book-btn">Book This Tour</a>
                             </div>
                         <?php else: ?>
                             <div class="tour-actions">

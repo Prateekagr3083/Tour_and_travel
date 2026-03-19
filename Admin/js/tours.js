@@ -83,13 +83,13 @@
     function addNewTour() {
         console.log('addNewTour() called');
         const modal = document.getElementById('addTourModal');
-        if (modal) {
+      /*  if (modal) {
             console.log('Modal found, displaying it');
             modal.style.display = 'block';
         } else {
             console.error('Add Tour modal not found!');
             alert('Add Tour modal not found!');
-        }
+        } */
     }
 
     // Hide add tour modal

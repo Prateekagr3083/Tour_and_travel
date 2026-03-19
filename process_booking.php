@@ -65,46 +65,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $total_price = $tour['price'] * $num_people;
     $booking_date = date('Y-m-d H:i:s');
 
-    // Start transaction
-    $conn->begin_transaction();
-
-    try {
-        // Insert booking
-        $booking_sql = "INSERT INTO bookings (user_id, tour_id, booking_date, status, total_price, num_people) VALUES (?, ?, ?, 'pending', ?, ?)";
-        $stmt_booking = $conn->prepare($booking_sql);
-        $stmt_booking->bind_param("iisdii", $user_id, $tour_id, $booking_date, $total_price, $num_people);
-        $stmt_booking->execute();
-        $booking_id = $conn->insert_id;
-
-        // Insert booking details for each person
-        $details_sql = "INSERT INTO booking_details (booking_id, person_name, age, gender, health_conditions) VALUES (?, ?, ?, ?, ?)";
-        $stmt_details = $conn->prepare($details_sql);
-
-        foreach ($people_data as $person) {
-            $stmt_details->bind_param("isiss", $booking_id, $person['name'], $person['age'], $person['gender'], $person['health_conditions']);
-            $stmt_details->execute();
-        }
-
-        // Commit transaction
-        $conn->commit();
-
-        $_SESSION['booking_success'] = "Your booking has been submitted successfully! It will be confirmed after admin approval.";
-
-        // Close statements
-        $stmt_booking->close();
-        $stmt_details->close();
-        $stmt_tour->close();
-
-    } catch (Exception $e) {
-        // Rollback transaction on error
-        $conn->rollback();
-        $_SESSION['booking_error'] = "Failed to process booking. Please try again.";
-    }
+    // Store booking data in session for payment processing
+    $_SESSION['pending_booking'] = [
+        'user_id' => $user_id,
+        'tour_id' => $tour_id,
+        'num_people' => $num_people,
+        'total_price' => $total_price,
+        'people_data' => $people_data,
+        'booking_date' => $booking_date
+    ];
 
     $conn->close();
 
-    // Redirect back to tour details or bookings page
-    header("Location: MyBookings.php");
+    // Redirect to payment page
+    header("Location: Payment.php");
     exit();
 } else {
     // Invalid request method
